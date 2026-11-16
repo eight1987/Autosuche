@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101e34">
   <meta name="description" content="Dein privates Fahrzeug-Dashboard mit Merkliste, Anzeigenlinks und Eingang für neue Kandidaten.">
-  <title>Fahrzeugradar · Mein Auto-Dashboard</title>
+  <title>Fahrzeugradar 3.0 · Meine Ranglisten</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%23102038'/%3E%3Ccircle cx='32' cy='32' r='21' stroke='%2366deb7' stroke-width='4' fill='none'/%3E%3Cpath d='M15 42l7-14h20l8 14M22 42v4m25-4v4' stroke='%23fff' stroke-width='4' stroke-linejoin='round' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
   <style>
 :root{--navy:#0f1c31;--navy2:#152640;--ink:#18283e;--muted:#718097;--line:#e8edf3;--bg:#f5f7fb;--white:#fff;--mint:#b9f0cd;--mint-dark:#1f7150;--teal:#2d9978;--orange:#ecaa63;--focus:#297ddf;--shadow:0 18px 45px rgba(15,33,60,.055);font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg)}
@@ -43,6 +43,78 @@
 
 @media(max-width:700px){.section-heading{flex-wrap:wrap}.section-buttons{justify-content:flex-start;width:100%}}
 
+/* Ranking 3.0 - clickable category views and manually editable order. */
+.rank-hub-placeholder{display:none}
+.ranking-hub{margin:0 0 33px}
+.ranking-hub-heading{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:0 0 16px}
+.ranking-hub-heading h2{margin:0;color:#20354c;font-size:24px;letter-spacing:-.8px}
+.ranking-hub-heading p{margin:7px 0 0;color:#758397;font-size:12px;line-height:1.5}
+.ranking-hub-note{white-space:nowrap;font-size:10px;font-weight:750;color:#2a7d63;padding:8px 10px;border-radius:7px;background:#e5f5ec}
+.ranking-category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.rank-tile{position:relative;background:white;text-align:left;border:1px solid #e4ecf2;border-radius:13px;padding:15px;display:flex;flex-direction:column;align-items:stretch;min-width:0;min-height:179px;box-shadow:var(--shadow);transition:transform .15s,border-color .15s,box-shadow .15s;color:#234056}
+.rank-tile:hover,.rank-tile:focus-visible{transform:translateY(-2px);border-color:#83cdb1;box-shadow:0 14px 30px rgba(22,58,76,.12)}
+.rank-tile.selected{background:linear-gradient(148deg,#e5f8ed,#ffffff 75%);border-color:#7ac7a8;box-shadow:inset 0 0 0 1px #9cddbd}
+.rank-tile-top{display:flex;align-items:center;justify-content:space-between;margin:0 0 11px}
+.rank-tile-number{font-size:12px;color:#8fa1b0;font-weight:800;letter-spacing:1.5px}
+.rank-tile-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#eaf6ef;color:#248563;padding:7px}
+.rank-tile-icon svg{width:100%;height:100%}
+.rank-tile-name{display:block;min-height:36px;font-size:13px;font-weight:850;letter-spacing:-.25px;line-height:1.36}
+.rank-tile-description{font-size:10px;line-height:1.5;color:#8a9aa8;margin:7px 0 auto;min-height:30px}
+.rank-tile-bottom{margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.rank-tile-count{font-size:10px;font-weight:800;color:#227657}
+.rank-tile-arrow{font-size:23px;line-height:12px;color:#7d96a0}
+.rank-tile-leader{margin-top:11px;border-top:1px solid #e6f0ea;padding-top:8px;color:#7e8ea2;font-size:9px;font-weight:650;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.ranking-mode .hero,.ranking-mode .stats{display:none}
+.ranking-mode .ranking-hub{padding-top:13px;margin-bottom:28px}
+.ranking-mode .vehicle-grid{grid-template-columns:1fr;gap:12px}
+.ranking-mode .filter-actions{display:none}
+.ranking-toolbar{margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;background:#edf7f0;border:1px solid #d4eadc;border-radius:12px;padding:13px 16px;gap:16px}
+.ranking-toolbar strong{font-size:12px;color:#286c53}
+.ranking-toolbar p{font-size:11px;color:#658c7c;margin:4px 0 0;line-height:1.5}
+.ranking-entry{display:grid;grid-template-columns:73px 200px minmax(0,1fr) 66px;gap:0;background:#fff;border:1px solid #e4eaf1;border-radius:14px;min-width:0;box-shadow:var(--shadow);overflow:hidden}
+.ranking-place{padding:22px 9px;text-align:center;border-right:1px solid #eaf0f3;background:#f5f8fb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.ranking-place span{font-size:8px;color:#8e9dac;font-weight:800;letter-spacing:1.2px}
+.ranking-place strong{font-size:36px;color:#6f879e;line-height:1;font-weight:850;letter-spacing:-2px}
+.ranking-place.podium{background:#fdf7e6}.ranking-place.podium strong{color:#c2922a}
+.ranking-photo{min-width:0;display:flex;align-items:stretch;overflow:hidden}
+.ranking-photo .vehicle-art{height:auto;width:100%;min-height:205px}
+.ranking-photo .vehicle-photo{object-fit:cover}
+.ranking-photo .vehicle-media-link{height:100%}
+.ranking-photo .car-silhouette{height:auto;max-height:116px}
+.ranking-photo .art-status{display:none}
+.ranking-detail{padding:16px 19px 16px;min-width:0}
+.ranking-entry-eyebrow{font-size:10px;font-weight:700;color:#8a9baa;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ranking-entry-eyebrow .ranking-star{color:#b88b26;background:#fff6d9;padding:3px 6px;border-radius:5px}
+.ranking-detail h3{font-size:16px;margin:7px 0 6px;color:#23384f;line-height:1.3}
+.ranking-entry-summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ranking-entry-summary>strong{font-size:21px;letter-spacing:-.6px;color:#162e43}
+.ranking-specs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 7px}
+.ranking-specs span{font-size:10px;color:#62758a;line-height:1.4}
+.ranking-specs span:not(:last-child):after{content:' | ';padding-left:8px;color:#a9b5c0}
+.ranking-chips{display:flex;gap:5px;flex-wrap:wrap}
+.ranking-chip{font-size:9px;background:#edf7f1;color:#3e8b6c;padding:5px 7px;border-radius:5px;font-weight:750}
+.ranking-note-text{font-size:10px;line-height:1.45;color:#8b98a7;margin:8px 0 10px;max-height:32px;overflow:hidden}
+.ranking-warning{font-size:10px;line-height:1.45;color:#a45e3c;background:#fff3ed;border-left:2px solid #e5a37a;padding:8px;margin:8px 0}
+.ranking-entry-actions{display:flex;gap:6px;flex-wrap:wrap}
+.ranking-entry-actions .btn{padding:9px 10px;font-size:10px}
+.ranking-entry-actions .btn svg{width:14px;height:14px}
+.ranking-move{background:#fafcfd;padding:16px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-left:1px solid #eef1f5}
+.ranking-move>span{font-size:7px;letter-spacing:.4px;font-weight:800;color:#9aa5b3;writing-mode:horizontal-tb;text-align:center}
+.ranking-move button{width:37px;height:37px;border:1px solid #dfe8ee;background:white;border-radius:9px;padding:9px;color:#477c75;display:grid;place-items:center}
+.ranking-move button:hover:not(:disabled){background:#def6e9;border-color:#a9ddc2}
+.ranking-move button:disabled{color:#c4cbd2;background:#f6f7f9}
+.field-help{display:block;font-size:10px;line-height:1.5;color:#8b9bab;margin-top:6px;font-weight:500}
+@media(max-width:1270px){.ranking-category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ranking-entry{grid-template-columns:65px 170px minmax(0,1fr) 57px}}
+@media(max-width:880px){.ranking-category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ranking-hub-heading{align-items:start;flex-direction:column}.ranking-hub-note{white-space:normal}.ranking-entry{grid-template-columns:65px 150px minmax(0,1fr) 52px}.ranking-photo .vehicle-art{min-height:220px}.ranking-detail{padding:12px}}
+@media(max-width:630px){.ranking-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.rank-tile{padding:12px;min-height:162px}.rank-tile-name{font-size:12px}.rank-tile-description{font-size:9px}.ranking-toolbar{flex-direction:column;align-items:stretch}.ranking-entry{grid-template-columns:60px minmax(0,1fr) 50px;grid-template-rows:105px auto}.ranking-place{grid-row:1;grid-column:1;padding:8px 3px}.ranking-place strong{font-size:29px}.ranking-photo{grid-column:2;grid-row:1}.ranking-photo .vehicle-art{min-height:105px;max-height:105px}.ranking-detail{grid-column:1/3;grid-row:2;padding:15px}.ranking-detail h3{font-size:14px}.ranking-entry-summary>strong{font-size:19px}.ranking-move{grid-column:3;grid-row:1/3;padding:8px 4px}.ranking-move>span{writing-mode:vertical-rl;letter-spacing:1px}.ranking-move button{width:32px;height:32px;padding:7px}.ranking-hub-heading h2{font-size:21px}.ranking-entry-actions .btn{font-size:10px}}
+@media(max-width:390px){.ranking-category-grid{grid-template-columns:1fr}.rank-tile{min-height:130px}.rank-tile-name{min-height:0}.rank-tile-description{min-height:0}.ranking-move>span{display:none}}
+
+/* Photo crop and small-screen navigation refinements. */
+.ranking-photo .vehicle-media-link{align-items:center;justify-content:center}
+.ranking-photo .vehicle-media-link .car-silhouette{width:93%;height:118px;margin:0;max-height:none}
+@media(max-width:700px){.sidebar nav[aria-label="Favoriten-Ranglisten"]{display:none}}
+@media(max-width:630px){.ranking-photo .vehicle-media-link .car-silhouette{height:105px;width:80%}}
+
   </style>
 </head>
 <body>
@@ -59,6 +131,14 @@
         <button class="nav-link" data-view="tracked"><span class="nav-icon" data-svg="car"></span><span>Weiterverfolgen</span><span class="nav-count" id="nav-tracked">0</span></button>
         <button class="nav-link" data-view="favorites"><span class="nav-icon" data-svg="star"></span><span>Top-Favoriten</span><span class="nav-count" id="nav-favorites">0</span></button>
         <button class="nav-link" data-view="archived"><span class="nav-icon" data-svg="archive"></span><span>Gestrichen</span><span class="nav-count" id="nav-archived">0</span></button>
+      </nav>
+      <div class="nav-label label-lower">DEINE RANGLISTEN</div>
+      <nav class="nav-links" aria-label="Favoriten-Ranglisten">
+        <button class="nav-link" data-view="rank-b-pano"><span class="nav-icon" data-svg="sun"></span><span>Insignia B · Benzin · Pano</span><span class="nav-count" id="nav-rank-b-pano">0</span></button>
+        <button class="nav-link" data-view="rank-b-no-pano"><span class="nav-icon" data-svg="car"></span><span>Insignia B · Benzin · ohne Pano</span><span class="nav-count" id="nav-rank-b-no-pano">0</span></button>
+        <button class="nav-link" data-view="rank-b-diesel"><span class="nav-icon" data-svg="fuel"></span><span>Insignia B · Diesel</span><span class="nav-count" id="nav-rank-b-diesel">0</span></button>
+        <button class="nav-link" data-view="rank-a"><span class="nav-icon" data-svg="car"></span><span>Insignia A</span><span class="nav-count" id="nav-rank-a">0</span></button>
+        <button class="nav-link" data-view="rank-overall"><span class="nav-icon" data-svg="trophy"></span><span>Gesamtranking</span><span class="nav-count" id="nav-rank-overall">0</span></button>
       </nav>
       <div class="nav-label label-lower">VERWALTUNG</div>
       <nav class="nav-links"><button class="nav-link" data-view="settings"><span class="nav-icon" data-svg="settings"></span><span>Einstellungen & Sync</span></button></nav>
@@ -83,9 +163,14 @@
 
         <section class="stats" aria-label="Kennzahlen"><article class="stat-card"><div class="stat-top"><span>Aktive Kandidaten</span><span class="stat-icon blue" data-svg="car"></span></div><div class="stat-main" id="stat-active">0</div><div class="stat-meta">Merkliste + neue Vorschläge</div></article><article class="stat-card"><div class="stat-top"><span>Noch zu entscheiden</span><span class="stat-icon peach" data-svg="bell"></span></div><div class="stat-main" id="stat-inbox">0</div><div class="stat-meta">Warten auf deine Entscheidung</div></article><article class="stat-card"><div class="stat-top"><span>Deine Top-Favoriten</span><span class="stat-icon yellow" data-svg="star"></span></div><div class="stat-main" id="stat-favorites">0</div><div class="stat-meta">Mit Stern markiert</div></article><article class="stat-card"><div class="stat-top"><span>Aussortiert</span><span class="stat-icon gray" data-svg="archive"></span></div><div class="stat-main" id="stat-archived">0</div><div class="stat-meta">Aus aktiver Suche entfernt</div></article></section>
 
+        <section class="ranking-hub" id="rankingHub" aria-labelledby="rankingHubTitle">
+          <div class="ranking-hub-heading"><div><div class="section-kicker">DEINE AUSWAHL NACH MODELL & MOTOR</div><h2 id="rankingHubTitle">Deine f&uuml;nf Favoriten-Ranglisten</h2><p>Klicke auf eine Kategorie und sieh sofort die aktuelle Reihenfolge. Kandidaten lassen sich jederzeit verschieben.</p></div><span class="ranking-hub-note">Nur &bdquo;Weiterverfolgen&ldquo;</span></div>
+          <div class="ranking-category-grid" id="rankingCategoryGrid"></div>
+        </section>
         <section class="listing-section"><div class="section-heading"><div><div class="section-kicker" id="sectionKicker">DEINE AUSWAHL</div><h2 id="sectionTitle">Fahrzeuge im Überblick</h2><p class="section-intro" id="sectionIntro">Alle noch aktiven Angebote. Anzeigenpreise und Verfügbarkeit bitte im Original prüfen.</p></div><div class="section-buttons"><a class="btn btn-outline btn-small" data-chat-link href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"><span data-svg="search"></span> In ChatGPT suchen</a><button class="btn btn-outline btn-small" id="btnCheckFeed"><span data-svg="refresh"></span> Daten-Feed prüfen</button></div></div>
+          <div class="ranking-toolbar" id="rankingToolbar" hidden><div><strong>Deine Reihenfolge</strong><p id="rankingModeNote">Hier kannst du die Platzierungen manuell verschieben.</p></div><button class="btn btn-outline btn-small" id="btnResetRanking"><span data-svg="refresh"></span> Ranking zur&uuml;cksetzen</button></div>
           <div class="filter-panel"><div class="search-wrap"><span data-svg="search"></span><input id="searchInput" type="search" autocomplete="off" placeholder="Modell, Ort, Stichwort suchen…" aria-label="Fahrzeuge durchsuchen"></div><div class="filter-actions"><label class="filter-check"><input type="checkbox" id="filterPano"><span>Nur mit Pano</span></label><label class="filter-check"><input type="checkbox" id="filterFuel"><span>Nur Benziner</span></label><select id="sortSelect" aria-label="Sortierung"><option value="priority">Nach Relevanz</option><option value="newest">Neueste zuerst</option><option value="price">Günstigste zuerst</option><option value="location">Nach Ort</option></select></div></div>
-          <div class="result-summary"><span id="resultCount">0 Fahrzeuge</span><span class="result-hint"><span data-svg="shield"></span> Streichungen bleiben dauerhaft aus dem aktiven Radar</span></div><div class="vehicle-grid" id="vehicleGrid" aria-live="polite"></div>
+          <div class="result-summary"><span id="resultCount">0 Fahrzeuge</span><span class="result-hint"><span data-svg="shield"></span> <span id="resultHintText">Streichungen bleiben aus dem aktiven Radar</span></span></div><div class="vehicle-grid" id="vehicleGrid" aria-live="polite"></div>
         </section>
       </div>
 
@@ -102,7 +187,7 @@
   </div>
 
   <div class="modal-backdrop" id="editorBackdrop" hidden><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog-head"><div><span class="section-kicker">FAHRZEUG VERWALTEN</span><h2 id="dialogTitle">Fahrzeug hinzufügen</h2></div><button class="icon-button" id="btnCloseDialog" aria-label="Schließen"><span data-svg="x"></span></button></div>
-    <form id="vehicleForm"><input type="hidden" id="fieldId"><div class="dialog-content"><div class="form-row"><label class="span-2">Fahrzeug / Titel *<input id="fieldTitle" required maxlength="140" placeholder="z. B. Insignia B Sports Tourer 1.5T"></label><label>Ort<input id="fieldLocation" maxlength="80" placeholder="z. B. Moers"></label></div><div class="form-row"><label class="span-3">Direktlink zur Anzeige<input id="fieldUrl" type="url" placeholder="https://www.kleinanzeigen.de/s-anzeige/..."></label></div><div class="form-row"><label class="span-3">Vorschaubild aus dieser Anzeige (optionale HTTPS-Bildadresse)<input id="fieldImage" type="url" placeholder="https://img.kleinanzeigen.de/... oder https://img.classistatic.de/..."></label></div><div class="form-row"><label>Preis (€)<input id="fieldPrice" type="number" min="0" step="1" placeholder="Unbekannt"></label><label>Kilometerstand<input id="fieldKm" type="number" min="0" step="1" placeholder="z. B. 150000"></label><label>Erstzulassung (Jahr)<input id="fieldYear" type="number" min="1990" max="2030" placeholder="z. B. 2018"></label></div><div class="form-row"><label>Kraftstoff<select id="fieldFuel"><option value="unknown">Unbekannt</option><option value="Benzin">Benzin</option><option value="Diesel">Diesel</option><option value="Hybrid">Hybrid</option><option value="LPG">LPG</option><option value="Elektro">Elektro</option></select></label><label>Getriebe<select id="fieldGear"><option value="unknown">Unbekannt</option><option value="Automatik">Automatik</option><option value="Schalter">Schalter</option></select></label><label>Leistung (PS)<input id="fieldPower" type="number" min="0" max="1000" step="1"></label></div><div class="form-row"><label>Priorität<select id="fieldPriority"><option value="high">Hoch</option><option value="normal" selected>Normal</option><option value="low">Niedrig</option></select></label><label>Status<select id="fieldStage"><option value="inbox">Neu / Entscheidung offen</option><option value="tracked">Weiterverfolgen</option><option value="archived">Gestrichen</option></select></label><label>Portal / Quelle<input id="fieldSource" maxlength="80" placeholder="Kleinanzeigen, mobile.de ..."></label></div><div class="form-row form-checks"><label><input type="checkbox" id="fieldPano"> Pano / Schiebedach</label><label><input type="checkbox" id="fieldAhk"> Anhängerkupplung</label><label><input type="checkbox" id="fieldKeyless"> Keyless</label><label><input type="checkbox" id="fieldFavorite"> Top-Favorit ★</label></div><div class="form-row"><label class="span-3">Deine Notizen / Rückfragen<textarea id="fieldNotes" rows="4" maxlength="1800" placeholder="Zustand, Servicehistorie, Fragen, Verhandlungsziel…"></textarea></label></div></div><div class="dialog-actions"><button type="button" class="btn btn-outline" id="btnCancelDialog">Abbrechen</button><button type="submit" class="btn btn-primary"><span data-svg="check"></span> Speichern</button></div></form></section></div>
+    <form id="vehicleForm"><input type="hidden" id="fieldId"><div class="dialog-content"><div class="form-row"><label class="span-2">Fahrzeug / Titel *<input id="fieldTitle" required maxlength="140" placeholder="z. B. Insignia B Sports Tourer 1.5T"></label><label>Ort<input id="fieldLocation" maxlength="80" placeholder="z. B. Moers"></label></div><div class="form-row"><label class="span-3">Direktlink zur Anzeige<input id="fieldUrl" type="url" placeholder="https://www.kleinanzeigen.de/s-anzeige/..."></label></div><div class="form-row"><label class="span-3">Vorschaubild aus dieser Anzeige (optionale HTTPS-Bildadresse)<input id="fieldImage" type="url" placeholder="https://img.kleinanzeigen.de/... oder https://img.classistatic.de/..."></label></div><div class="form-row"><label>Preis (€)<input id="fieldPrice" type="number" min="0" step="1" placeholder="Unbekannt"></label><label>Kilometerstand<input id="fieldKm" type="number" min="0" step="1" placeholder="z. B. 150000"></label><label>Erstzulassung (Jahr)<input id="fieldYear" type="number" min="1990" max="2030" placeholder="z. B. 2018"></label></div><div class="form-row"><label>Kraftstoff<select id="fieldFuel"><option value="unknown">Unbekannt</option><option value="Benzin">Benzin</option><option value="Diesel">Diesel</option><option value="Hybrid">Hybrid</option><option value="LPG">LPG</option><option value="Elektro">Elektro</option></select></label><label>Getriebe<select id="fieldGear"><option value="unknown">Unbekannt</option><option value="Automatik">Automatik</option><option value="Schalter">Schalter</option></select></label><label>Leistung (PS)<input id="fieldPower" type="number" min="0" max="1000" step="1"></label></div><div class="form-row"><label class="span-3">Insignia-Generation f&uuml;r die Rangliste<select id="fieldGeneration"><option value="auto">Automatisch aus dem Titel erkennen</option><option value="B">Insignia B</option><option value="A">Insignia A</option><option value="other">Anderes Modell / kein Insignia</option></select><span class="field-help">Bei unbekannter Modellreihe hier A oder B ausw&auml;hlen. Die Kategorien mit und ohne Panorama werden nur bef&uuml;llt, wenn du im Panorama-Feld bewusst &bdquo;Ja&ldquo; oder &bdquo;Nein&ldquo; angibst.</span></label></div><div class="form-row"><label>Priorität<select id="fieldPriority"><option value="high">Hoch</option><option value="normal" selected>Normal</option><option value="low">Niedrig</option></select></label><label>Status<select id="fieldStage"><option value="inbox">Neu / Entscheidung offen</option><option value="tracked">Weiterverfolgen</option><option value="archived">Gestrichen</option></select></label><label>Portal / Quelle<input id="fieldSource" maxlength="80" placeholder="Kleinanzeigen, mobile.de ..."></label></div><div class="form-row form-checks"><label>Panoramadach <select id="fieldPano"><option value="unknown">Noch ungepr&uuml;ft</option><option value="yes">Ja, vorhanden</option><option value="no">Nein, nicht vorhanden</option></select></label><label><input type="checkbox" id="fieldAhk"> Anhängerkupplung</label><label><input type="checkbox" id="fieldKeyless"> Keyless</label><label><input type="checkbox" id="fieldFavorite"> Top-Favorit ★</label></div><div class="form-row"><label class="span-3">Deine Notizen / Rückfragen<textarea id="fieldNotes" rows="4" maxlength="1800" placeholder="Zustand, Servicehistorie, Fragen, Verhandlungsziel…"></textarea></label></div></div><div class="dialog-actions"><button type="button" class="btn btn-outline" id="btnCancelDialog">Abbrechen</button><button type="submit" class="btn btn-primary"><span data-svg="check"></span> Speichern</button></div></form></section></div>
   <input type="file" id="fileImport" accept="application/json,.json" hidden>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>
@@ -205,7 +290,11 @@ const ICONS = {
   upload:'<path d="M12 17V4m-5 5 5-5 5 5M4 17v4h16v-4"/>',
   sliders:'<path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="3" fill="#fff"/><circle cx="16" cy="17" r="3" fill="#fff"/>',
   info:'<circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7h.01"/>',
-  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  trophy:'<path d="M8 21h8m-6-4h4m-2 0v4M7 4h10v5c0 4-2 7-5 8-3-1-5-4-5-8V4Z"/><path d="M7 6H4v3c0 2 2 3 4 3m9-6h3v3c0 2-2 3-4 3"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/>',
+  'chevron-up':'<path d="m5 15 7-7 7 7"/>',
+  'chevron-down':'<path d="m5 9 7 7 7-7"/>'
 };
 function icon(name){return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">${ICONS[name]||ICONS.info}</svg>`;}
 function injectIcons(root=document){root.querySelectorAll('[data-svg]:not([data-svg-rendered])').forEach(el=>{el.innerHTML=icon(el.getAttribute('data-svg'));el.setAttribute('data-svg-rendered','true');});}
@@ -222,11 +311,90 @@ function norm(v,stage='inbox'){
   const title=txt(v.title||v.name||'', '').trim();if(!title)return null;
   const u=safeLink(v.url||v.link||'');
   const st=['inbox','tracked','archived'].includes(v.stage)?v.stage:stage;
-  return {id:deriveId({...v,url:u}),title:title.slice(0,140),url:u,imageUrl:safeImage(v.imageUrl||v.image||v.thumbnail||''),price:nval(v.price),priceNote:txt(v.priceNote).slice(0,200),km:nval(v.km),year:nval(v.year),location:txt(v.location||'Ort unbekannt').slice(0,80),fuel:txt(v.fuel||'unknown'),gear:txt(v.gear||'unknown'),power:nval(v.power),pano:v.pano===true?true:v.pano===false?false:null,ahk:v.ahk===true?true:v.ahk===false?false:null,keyless:v.keyless===true?true:v.keyless===false?false:null,stage:st,favorite:Boolean(v.favorite),priority:['high','normal','low'].includes(v.priority)?v.priority:'normal',source:txt(v.source||'Manuell').slice(0,80),color:['blue','silver','sage','gray','cream','dark'].includes(v.color)?v.color:'silver',notes:txt(v.notes).slice(0,1800),warning:txt(v.warning).slice(0,400),addedAt:txt(v.addedAt||DATE_IMPORTED),updatedAt:txt(v.updatedAt||DATE_IMPORTED),history:Array.isArray(v.history)?v.history.slice(-20).map(x=>({price:nval(x.price),at:txt(x.at)})):[]};
+  return {id:deriveId({...v,url:u}),title:title.slice(0,140),url:u,imageUrl:safeImage(v.imageUrl||v.image||v.thumbnail||''),price:nval(v.price),priceNote:txt(v.priceNote).slice(0,200),km:nval(v.km),year:nval(v.year),location:txt(v.location||'Ort unbekannt').slice(0,80),fuel:txt(v.fuel||'unknown'),gear:txt(v.gear||'unknown'),generation:['A','B','other'].includes(v.generation)?v.generation:'auto',power:nval(v.power),pano:v.pano===true?true:v.pano===false?false:null,ahk:v.ahk===true?true:v.ahk===false?false:null,keyless:v.keyless===true?true:v.keyless===false?false:null,stage:st,favorite:Boolean(v.favorite),priority:['high','normal','low'].includes(v.priority)?v.priority:'normal',source:txt(v.source||'Manuell').slice(0,80),color:['blue','silver','sage','gray','cream','dark'].includes(v.color)?v.color:'silver',notes:txt(v.notes).slice(0,1800),warning:txt(v.warning).slice(0,400),addedAt:txt(v.addedAt||DATE_IMPORTED),updatedAt:txt(v.updatedAt||DATE_IMPORTED),history:Array.isArray(v.history)?v.history.slice(-20).map(x=>({price:nval(x.price),at:txt(x.at)})):[]};
 }
-function defaultStore(){return {version:1,settings:{...DEFAULTS},dismissed:[...EXCLUDED_IDS],vehicles:SEED.map(v=>norm({...v,addedAt:DATE_IMPORTED,updatedAt:DATE_IMPORTED},v.stage))};}
+
+// Ranking lists share the original vehicle store; there is no second database.
+const RANKING_CATEGORIES = [
+  {key:'rank-b-pano',index:'01',name:'Insignia B mit Panorama',short:'B · Benzin · Pano',description:'Benziner mit bestaetigtem Panorama- oder Schiebedach.',icon:'sun'},
+  {key:'rank-b-no-pano',index:'02',name:'Insignia B ohne Panorama',short:'B · Benzin · ohne Pano',description:'Benziner, bei denen fehlendes Pano bestaetigt wurde.',icon:'car'},
+  {key:'rank-b-diesel',index:'03',name:'Insignia B als Diesel',short:'B · Diesel',description:'Alle vorgemerkten Insignia B Diesel, mit und ohne Panorama.',icon:'fuel'},
+  {key:'rank-a',index:'04',name:'Insignia A',short:'Insignia A',description:'Alle vorgemerkten Insignia A, unabhaengig vom Motor.',icon:'car'},
+  {key:'rank-overall',index:'05',name:'Gesamtranking',short:'Gesamtranking',description:'Deine komplette aktive Merkliste, inklusive Alternativen.',icon:'trophy'}
+];
+const RANK_KEYS = new Set(RANKING_CATEGORIES.map(x=>x.key));
+function isRankingView(key=view){return RANK_KEYS.has(key);}
+function cleanRankings(data){const cleaned={};for(const {key} of RANKING_CATEGORIES){const ids=data?.[key];if(Array.isArray(ids))cleaned[key]=Array.from(new Set(ids.filter(x=>typeof x==='string'&&x.length<220))).slice(0,500);}return cleaned;}
+function generationOf(v){
+  if(v.generation==='A'||v.generation==='B'||v.generation==='other')return v.generation;
+  const t=v.title||'';
+  if(/\binsignia\s+b\b|\binsignia\s+ii\b/i.test(t))return 'B';
+  if(/\binsignia\s+a\b|\binsignia\s+i\b/i.test(t))return 'A';
+  return 'unknown';
+}
+function isPetrol(v){return /^Benzin$/i.test(v.fuel);}
+function isDiesel(v){return /^Diesel$/i.test(v.fuel);}
+function belongsToRanking(v,key){
+  if(v.stage!=='tracked')return false;
+  const generation=generationOf(v);
+  if(key==='rank-b-pano')return generation==='B'&&isPetrol(v)&&v.pano===true;
+  if(key==='rank-b-no-pano')return generation==='B'&&isPetrol(v)&&v.pano===false;
+  if(key==='rank-b-diesel')return generation==='B'&&isDiesel(v);
+  if(key==='rank-a')return generation==='A';
+  if(key==='rank-overall')return true;
+  return false;
+}
+// Only an initial sorting proposal. Users can freely change the order within each ranking.
+function rankHeuristic(v){
+  const g=generationOf(v), b=Number(store.settings.budget)||10000, stretch=Number(store.settings.stretch)||11500;
+  let points=35;
+  if(g==='B')points+=16;else if(g==='A')points+=4;
+  if(isPetrol(v))points+=13;else if(isDiesel(v))points+=2;
+  if(v.pano===true)points+=18;else if(v.pano===false)points-=7;
+  if(v.gear==='Automatik')points+=4;
+  if(v.ahk===true)points+=4;if(v.keyless===true)points+=3;
+  if(v.favorite)points+=6;
+  if(v.priority==='high')points+=5;else if(v.priority==='low')points-=5;
+  if(v.price!=null){if(v.price<=b)points+=7;else if(v.price>stretch)points-=18;else points-=4;}else points-=3;
+  if(v.km!=null){if(v.km<120000)points+=5;else if(v.km>200000)points-=9;}
+  if(v.year&&v.year>=2017)points+=3;
+  if(v.warning)points-=12;
+  return points;
+}
+function rankedVehicles(key){
+  const eligible=store.vehicles.filter(v=>belongsToRanking(v,key));
+  const byId=new Map(eligible.map(v=>[v.id,v]));
+  const ordered=[],used=new Set();
+  for(const id of (store.rankings?.[key]||[])){if(byId.has(id)&&!used.has(id)){ordered.push(byId.get(id));used.add(id);}}
+  const fresh=eligible.filter(v=>!used.has(v.id)).sort((a,b)=>rankHeuristic(b)-rankHeuristic(a)||String(a.id).localeCompare(String(b.id)));
+  return [...ordered,...fresh];
+}
+function moveRanking(id,direction){
+  if(!isRankingView())return;
+  if(q){toast('Bitte erst die Suche leeren, um die Reihenfolge zu aendern.');return;}
+  const ids=rankedVehicles(view).map(v=>v.id),pos=ids.indexOf(id),next=pos+direction;
+  if(pos<0||next<0||next>=ids.length)return;
+  [ids[pos],ids[next]]=[ids[next],ids[pos]];
+  store.rankings[view]=ids;save();render();
+  const moved=document.querySelector(`[data-rank-id="${CSS.escape(id)}"]`);
+  if(moved)moved.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function renderRankingHub(){
+  $('rankingCategoryGrid').innerHTML=RANKING_CATEGORIES.map(c=>{
+    const list=rankedVehicles(c.key),leader=list[0];
+    return `<button class="rank-tile ${view===c.key?'selected':''}" data-view="${c.key}" aria-label="${esc(c.name)}, ${list.length} Fahrzeuge" aria-pressed="${view===c.key?'true':'false'}"><span class="rank-tile-top"><span class="rank-tile-number">${c.index}</span><span class="rank-tile-icon">${icon(c.icon)}</span></span><span class="rank-tile-name">${esc(c.name)}</span><span class="rank-tile-description">${esc(c.description)}</span><span class="rank-tile-bottom"><span class="rank-tile-count">${list.length} ${list.length===1?'Kandidat':'Kandidaten'}</span><span class="rank-tile-arrow">&#8594;</span></span><span class="rank-tile-leader">${leader?'#1 '+esc(leader.title):'Noch kein Kandidat'}</span></button>`;
+  }).join('');
+}
+function renderRankCard(v,index,total){
+  const budget=budgetInfo(v),status=stageLabel(v),atTop=index===0,atBottom=index===total-1;
+  const specs=[v.year||'EZ offen',v.km!=null?fmtNum(v.km)+' km':'km offen',v.fuel!=='unknown'?v.fuel:'Motor offen',v.gear!=='unknown'?v.gear:'Getriebe offen'].map(x=>esc(x));
+  const features=[v.pano===true?'Panorama vorhanden':v.pano===false?'Kein Panorama':'Pano ungeklaert',v.ahk===true?'AHK':null,v.keyless===true?'Keyless':null].filter(Boolean).map(f=>`<span class="ranking-chip">${esc(f)}</span>`).join('');
+  const disabled=Boolean(q);
+  return `<article class="ranking-entry" data-rank-id="${esc(v.id)}"><div class="ranking-place ${index===0?'podium':''}"><span>PLATZ</span><strong>${String(index+1).padStart(2,'0')}</strong><span>${index===0?'TOP':index===1?'SILBER':index===2?'BRONZE':'LISTE'}</span></div><div class="ranking-photo">${mediaArt(v,status)}</div><div class="ranking-detail"><div class="ranking-entry-eyebrow">${esc(v.location)} <span>&bull;</span> ${esc(v.source)} ${v.favorite?'<span class="ranking-star">&#9733; Favorit</span>':''}</div><h3>${esc(v.title)}</h3><div class="ranking-entry-summary"><strong>${fmtMoney(v.price)}</strong><span class="budget-pill ${budget.className}">${esc(budget.text)}</span></div><div class="ranking-specs">${specs.map(t=>`<span>${t}</span>`).join('')}</div><div class="ranking-chips">${features}</div>${v.warning?`<p class="ranking-warning">${esc(v.warning)}</p>`:''}<p class="ranking-note-text">${esc(v.notes||'Noch keine Notizen vorhanden.')}</p><div class="ranking-entry-actions">${v.url?`<a class="btn btn-primary btn-small" href="${esc(v.url)}" target="_blank" rel="noopener noreferrer">${icon('external')} Anzeige oeffnen</a>`:''}<button class="btn btn-outline btn-small" data-action="edit" data-id="${esc(v.id)}">${icon('pencil')} Bearbeiten</button><button class="btn btn-danger btn-small" data-action="archive" data-id="${esc(v.id)}">${icon('x')} Streichen</button></div></div><div class="ranking-move"><span>REIHENFOLGE</span><button data-action="rank-up" data-id="${esc(v.id)}" title="${esc(v.title)} einen Platz nach oben" aria-label="Einen Platz nach oben" ${atTop||disabled?'disabled':''}>${icon('chevron-up')}</button><button data-action="rank-down" data-id="${esc(v.id)}" title="${esc(v.title)} einen Platz nach unten" aria-label="Einen Platz nach unten" ${atBottom||disabled?'disabled':''}>${icon('chevron-down')}</button></div></article>`;
+}
+function defaultStore(){return {version:1,settings:{...DEFAULTS},dismissed:[...EXCLUDED_IDS],rankings:{},vehicles:SEED.map(v=>norm({...v,addedAt:DATE_IMPORTED,updatedAt:DATE_IMPORTED},v.stage))};}
 let ephemeral=false;
-function loadStore(){try{const data=JSON.parse(localStorage.getItem(STORE_KEY));if(data&&Array.isArray(data.vehicles)){return {version:1,settings:{...DEFAULTS,...(data.settings||{})},dismissed:Array.isArray(data.dismissed)?Array.from(new Set([...EXCLUDED_IDS,...data.dismissed])):[...EXCLUDED_IDS],vehicles:data.vehicles.map(v=>{const normalized=norm(v);if(!normalized)return null;const seed=SEED.find(s=>listingId(s.url)===normalized.id);if(seed?.imageUrl&&!normalized.imageUrl)normalized.imageUrl=seed.imageUrl;return normalized;}).filter(Boolean)};}}catch(e){console.warn('storage unavailable',e);ephemeral=true;}return defaultStore();}
+function loadStore(){try{const data=JSON.parse(localStorage.getItem(STORE_KEY));if(data&&Array.isArray(data.vehicles)){return {version:1,settings:{...DEFAULTS,...(data.settings||{})},rankings:cleanRankings(data.rankings),dismissed:Array.isArray(data.dismissed)?Array.from(new Set([...EXCLUDED_IDS,...data.dismissed])):[...EXCLUDED_IDS],vehicles:data.vehicles.map(v=>{const normalized=norm(v);if(!normalized)return null;const seed=SEED.find(s=>listingId(s.url)===normalized.id);if(seed?.imageUrl&&!normalized.imageUrl)normalized.imageUrl=seed.imageUrl;return normalized;}).filter(Boolean)};}}catch(e){console.warn('storage unavailable',e);ephemeral=true;}return defaultStore();}
 let store=loadStore();
 let view='all',q='',panoOnly=false,petrolOnly=false,sort='priority',toastTimer,editorFocus;
 const $=id=>document.getElementById(id);
@@ -268,22 +436,35 @@ function filtered(){let arr=store.vehicles.filter(v=>{
   return srank(a.stage)-srank(b.stage) || Number(b.favorite)-Number(a.favorite) || ({high:0,normal:1,low:2}[a.priority]-{high:0,normal:1,low:2}[b.priority]) || String(b.addedAt).localeCompare(String(a.addedAt));
  });return arr;
 }
-const VIEW_LABELS={all:['DEINE AUSWAHL','Fahrzeuge im Überblick','Alle noch aktiven Angebote. Anzeigenpreise und Verfügbarkeit bitte im Original prüfen.'],inbox:['NEUE VORSCHLÄGE','Worüber möchtest du entscheiden?','Jeden Vorschlag mit Weiterverfolgen übernehmen oder mit Streichen ausblenden.'],tracked:['AKTIVE MERKLISTE','Diese Fahrzeuge verfolgst du','Deine ausgewählten Kandidaten. Direktlinks und Notizen immer griffbereit.'],favorites:['TOP-AUSWAHL','Deine Top-Favoriten','Die Angebote mit Stern – für die engere Wahl.'],archived:['AUSGESCHLOSSEN','Diese Fahrzeuge sind gestrichen','Hier bleiben gestrichene Einträge für den Fall, dass du sie wiederherstellen möchtest.']};
-function render(){const c=counts();$('stat-active').textContent=c.active;$('stat-inbox').textContent=c.inbox;$('stat-favorites').textContent=c.favorites;$('stat-archived').textContent=c.archived;$('heroActiveCount').textContent=c.active;$('heroInboxCount').textContent=c.inbox;
+const VIEW_LABELS={all:['DEINE AUSWAHL','Fahrzeuge im Überblick','Alle noch aktiven Angebote. Anzeigenpreise und Verfügbarkeit bitte im Original prüfen.'],inbox:['NEUE VORSCHLÄGE','Worüber möchtest du entscheiden?','Jeden Vorschlag mit Weiterverfolgen übernehmen oder mit Streichen ausblenden.'],tracked:['AKTIVE MERKLISTE','Diese Fahrzeuge verfolgst du','Deine ausgewählten Kandidaten. Direktlinks und Notizen immer griffbereit.'],favorites:['TOP-AUSWAHL','Deine Top-Favoriten','Die Angebote mit Stern – für die engere Wahl.'],archived:['AUSGESCHLOSSEN','Diese Fahrzeuge sind gestrichen','Hier bleiben gestrichene Einträge für den Fall, dass du sie wiederherstellen möchtest.'],'rank-b-pano':['RANGLISTE 01','Insignia B mit Panorama / Benziner','Nur vorgemerkte Benziner mit bestaetigtem Panorama- oder Schiebedach.'],'rank-b-no-pano':['RANGLISTE 02','Insignia B ohne Panorama / Benziner','Nur vorgemerkte Benziner, bei denen kein Panorama vorhanden ist.'],'rank-b-diesel':['RANGLISTE 03','Insignia B als Diesel','Vorgemerkte Diesel, unabhaengig davon, ob ein Panoramadach vorhanden ist.'],'rank-a':['RANGLISTE 04','Opel Insignia A','Alle vorgemerkten Insignia A im direkten Vergleich.'],'rank-overall':['RANGLISTE 05','Dein Gesamtranking','Alle vorgemerkten Fahrzeuge im gemeinsamen Vergleich, inklusive Alternativen.']};
+function render(){
+  const c=counts();$('stat-active').textContent=c.active;$('stat-inbox').textContent=c.inbox;$('stat-favorites').textContent=c.favorites;$('stat-archived').textContent=c.archived;$('heroActiveCount').textContent=c.active;$('heroInboxCount').textContent=c.inbox;
   ['all','inbox','tracked','favorites','archived'].forEach(k=>{$('nav-'+k).textContent=(k==='all'?c.active:c[k]);});
+  RANKING_CATEGORIES.forEach(({key})=>{$('nav-'+key).textContent=rankedVehicles(key).length;});
   document.querySelectorAll('[data-view]').forEach(el=>{const active=el.dataset.view===view;el.classList.toggle('active',active);el.setAttribute('aria-current',active?'page':'false');});
-  const settings=view==='settings';$('dashboardScreen').hidden=settings;$('settingsScreen').hidden=!settings;
+  const settings=view==='settings',ranking=isRankingView();
+  $('dashboardScreen').hidden=settings;$('settingsScreen').hidden=!settings;
+  $('dashboardScreen').classList.toggle('ranking-mode',ranking);
   if(settings){$('settingBudget').value=store.settings.budget;$('settingStretch').value=store.settings.stretch;$('settingFeed').value=store.settings.feedUrl||'';return;}
-  const labels=VIEW_LABELS[view]||VIEW_LABELS.all;$('sectionKicker').textContent=labels[0];$('sectionTitle').textContent=labels[1];$('sectionIntro').textContent=labels[2];
-  const cars=filtered();$('resultCount').textContent=`${cars.length} ${cars.length===1?'Fahrzeug':'Fahrzeuge'}`;
-  $('vehicleGrid').innerHTML=cars.length?cars.map(renderCard).join(''):`<div class="empty"><div class="empty-symbol">${icon(view==='inbox'?'check':view==='archived'?'archive':'search')}</div><h3>${view==='inbox'?'Alles entschieden!':'Hier ist gerade nichts gelistet.'}</h3><p>${view==='inbox'?'Alle neuen Vorschläge wurden bearbeitet. Neue Funde aus einer Datenquelle erscheinen später automatisch hier.':'Passe deine Filter an oder füge selbst eine Anzeige hinzu.'}</p><button class="btn btn-primary" data-action="open-add">${icon('plus')} Anzeige hinzufügen</button></div>`;
-  injectIcons($('vehicleGrid'));monitorImages($('vehicleGrid'));
+  renderRankingHub();
+  const labels=VIEW_LABELS[view]||VIEW_LABELS.all;
+  $('sectionKicker').textContent=labels[0];$('sectionTitle').textContent=labels[1];$('sectionIntro').textContent=labels[2];
+  $('rankingToolbar').hidden=!ranking;
+  $('rankingModeNote').textContent=ranking?(store.rankings?.[view]?.length?'Deine individuell gespeicherte Reihenfolge. Mit den Pfeilen veraendern.':'Startsortierung nach Suchprofil. Mit den Pfeilen kannst du dein Ranking festlegen.') : '';
+  const allRanked=ranking?rankedVehicles(view):[];
+  const cars=ranking?allRanked.filter(v=>!q||[v.title,v.location,v.notes,v.fuel,v.gear,v.source].join(' ').toLowerCase().includes(q.toLowerCase())):filtered();
+  $('resultCount').textContent=`${cars.length} ${cars.length===1?'Fahrzeug':'Fahrzeuge'}`;
+  $('resultHintText').textContent=ranking?'Nur Fahrzeuge unter Weiterverfolgen - gestrichene Angebote werden nicht gezeigt.':'Streichungen bleiben aus dem aktiven Radar';
+  const grid=$('vehicleGrid');
+  grid.innerHTML=cars.length?(ranking?cars.map(v=>renderRankCard(v,allRanked.indexOf(v),allRanked.length)).join(''):cars.map(renderCard).join('')):`<div class="empty"><div class="empty-symbol">${icon(ranking?'trophy':view==='inbox'?'check':view==='archived'?'archive':'search')}</div><h3>${ranking?'Hier ist noch kein Kandidat gelistet.':view==='inbox'?'Alles entschieden!':'Hier ist gerade nichts gelistet.'}</h3><p>${ranking?'Uebernimm passende Fahrzeuge unter Neue Vorschlaege mit Weiterverfolgen. Pruefe bei fehlender Zuordnung auch Kraftstoff, Insignia-Generation und Panoramadach im Bearbeiten-Dialog.':view==='inbox'?'Alle neuen Vorschlaege wurden bearbeitet. Neue Funde aus einer Datenquelle erscheinen spaeter hier.':'Passe deine Filter an oder fuege selbst eine Anzeige hinzu.'}</p><button class="btn btn-primary" data-action="open-add">${icon('plus')} Anzeige hinzufuegen</button></div>`;
+  injectIcons(grid);monitorImages(grid);
 }
 function setView(next){view=next;q='';$('searchInput').value='';panoOnly=false;petrolOnly=false;$('filterPano').checked=false;$('filterFuel').checked=false;render();window.scrollTo({top:0,behavior:'smooth'});}
 function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3400);}
 function getVehicle(id){return store.vehicles.find(x=>x.id===id);}
 function actionVehicle(act,id){const v=getVehicle(id);if(!v)return;
   if(act==='edit'){openEditor(v);return;}
+  if(act==='rank-up'||act==='rank-down'){moveRanking(id,act==='rank-up'?-1:1);return;}
   if(act==='archive'){v.stage='archived';v.favorite=false;toast('Gestrichen. Das Fahrzeug ist aus dem aktiven Dashboard entfernt.');}
   if(act==='accept'){v.stage='tracked';toast('Zur Merkliste hinzugefügt.');}
   if(act==='restore'){v.stage='inbox';toast('Fahrzeug zur erneuten Prüfung wiederhergestellt.');}
@@ -295,12 +476,12 @@ function openEditor(v=null){editorFocus=document.activeElement;$('vehicleForm').
   const pairs={Title:v?.title||'',Url:v?.url||'',Image:v?.imageUrl||'',Price:v?.price??'',Km:v?.km??'',Year:v?.year??'',Location:v?.location||'',Power:v?.power??'',Source:v?.source||'',Notes:v?.notes||''};
   Object.entries(pairs).forEach(([k,x])=>$('field'+k).value=x);
   $('fieldFuel').value=v?.fuel||'unknown';$('fieldGear').value=v?.gear||'unknown';$('fieldPriority').value=v?.priority||'normal';$('fieldStage').value=v?.stage||'inbox';
-  $('fieldPano').checked=v?.pano===true;$('fieldAhk').checked=v?.ahk===true;$('fieldKeyless').checked=v?.keyless===true;$('fieldFavorite').checked=Boolean(v?.favorite);
+  $('fieldPano').value=v?.pano===true?'yes':v?.pano===false?'no':'unknown';$('fieldAhk').checked=v?.ahk===true;$('fieldKeyless').checked=v?.keyless===true;$('fieldFavorite').checked=Boolean(v?.favorite);$('fieldGeneration').value=v?.generation||'auto';
   $('editorBackdrop').hidden=false;document.body.style.overflow='hidden';$('fieldTitle').focus();
 }
 function closeEditor(){$('editorBackdrop').hidden=true;document.body.style.overflow='';if(editorFocus?.focus)editorFocus.focus();}
 function submitEditor(e){e.preventDefault();const oldId=$('fieldId').value,prev=oldId?getVehicle(oldId):null;
-  const data={id:oldId||'',title:$('fieldTitle').value.trim(),url:$('fieldUrl').value.trim(),imageUrl:$('fieldImage').value.trim(),price:nval($('fieldPrice').value),km:nval($('fieldKm').value),year:nval($('fieldYear').value),location:$('fieldLocation').value.trim()||'Ort unbekannt',fuel:$('fieldFuel').value,gear:$('fieldGear').value,power:nval($('fieldPower').value),pano:$('fieldPano').checked,ahk:$('fieldAhk').checked,keyless:$('fieldKeyless').checked,stage:$('fieldStage').value,favorite:$('fieldFavorite').checked,priority:$('fieldPriority').value,source:$('fieldSource').value.trim()||'Manuell',notes:$('fieldNotes').value,color:prev?.color||'silver',warning:prev?.warning||'',priceNote:prev?.priceNote||'',history:prev?.history||[],addedAt:prev?.addedAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
+  const data={id:oldId||'',title:$('fieldTitle').value.trim(),url:$('fieldUrl').value.trim(),imageUrl:$('fieldImage').value.trim(),price:nval($('fieldPrice').value),km:nval($('fieldKm').value),year:nval($('fieldYear').value),location:$('fieldLocation').value.trim()||'Ort unbekannt',fuel:$('fieldFuel').value,gear:$('fieldGear').value,generation:$('fieldGeneration').value,power:nval($('fieldPower').value),pano:$('fieldPano').value==='yes'?true:$('fieldPano').value==='no'?false:null,ahk:$('fieldAhk').checked,keyless:$('fieldKeyless').checked,stage:$('fieldStage').value,favorite:$('fieldFavorite').checked,priority:$('fieldPriority').value,source:$('fieldSource').value.trim()||'Manuell',notes:$('fieldNotes').value,color:prev?.color||'silver',warning:prev?.warning||'',priceNote:prev?.priceNote||'',history:prev?.history||[],addedAt:prev?.addedAt||new Date().toISOString(),updatedAt:new Date().toISOString()};
   if(!data.title){toast('Bitte gib einen Fahrzeugtitel ein.');return;}
   if(data.url&&!safeLink(data.url)){toast('Bitte einen gültigen http(s)-Direktlink eingeben.');return;}
   if(data.imageUrl&&!safeImage(data.imageUrl)){toast('Für ein Vorschaubild ist eine vollständige HTTPS-Bildadresse erforderlich.');return;}
@@ -319,13 +500,16 @@ function importFeed(payload){const records=Array.isArray(payload)?payload:Array.
     if(old){let changed=false;
       if(candidate.price!==null&&old.price!==candidate.price){if(old.price!=null)old.history.push({price:old.price,at:new Date().toISOString()});old.history=old.history.slice(-20);old.price=candidate.price;old.priceNote='Preis aus Daten-Feed';changed=true;}
       if(candidate.imageUrl&&old.imageUrl!==candidate.imageUrl){old.imageUrl=candidate.imageUrl;changed=true;}
+      if(old.generation==='auto'&&candidate.generation!=='auto'){old.generation=candidate.generation;changed=true;}
+      if(old.pano===null&&candidate.pano!==null){old.pano=candidate.pano;changed=true;}
+      if(old.fuel==='unknown'&&candidate.fuel!=='unknown'){old.fuel=candidate.fuel;changed=true;}
       for(const name of ['km','year','power']){if(candidate[name]!==null&&old[name]!==candidate[name]){old[name]=candidate[name];changed=true;}}
       if(changed){old.updatedAt=new Date().toISOString();updated++;}else skipped++;
     }else{candidate.stage='inbox';candidate.favorite=false;candidate.addedAt=new Date().toISOString();candidate.updatedAt=candidate.addedAt;store.vehicles.unshift(candidate);added++;}
   }if(added||updated)save();return {added,updated,skipped};
 }
 // Open ChatGPT with a pre-filled search brief. This does not grant ChatGPT write access to the website.
-const SEARCH_BRIEF=`Bitte suche tagesaktuell nach tatsächlich überprüfbaren Gebrauchtwagen-Inseraten für meine Autosuche: Priorität Opel Insignia B Sports Tourer, bevorzugt 1.5 Turbo 165 PS Benziner, alternativ außergewöhnlich gute 2.0 Diesel; Panorama-/Schiebedach wichtig (öffnend bevorzugt), Automatik gern, Schalter ok, AHK/Keyless positiv. Kaufpreis maximal 10.000 EUR; Angebotspreise bis 11.500 EUR nur falls Verhandlung auf 10.000 EUR nachvollziehbar realistisch. Umkreis Moers 250 km bevorzugt, deutschlandweit bei passenden Angeboten. Unfallwagen und 1.2 PureTech ausschließen. Bereits verkauft/gelöscht und nicht wieder empfehlen: Kleinanzeigen-IDs 3538304317, 3537166161, 3531164885, 3514610789; Bocholt mit gelöschter Anzeige ebenfalls ausschließen. Bitte echte Direkteinträge, Verfügbarkeit soweit prüfbar, Preis/Kilometerstand/Zustand/Ausstattung plausibilisieren, Duplikate vermeiden und niemals Inserate erfinden. Gib mir nach deiner kurzen Bewertung zusätzlich einen kopierbaren JSON-Codeblock im Format {"vehicles":[{"title":"...","url":"https://...","price":9900,"km":120000,"year":2018,"location":"...","fuel":"Benzin","gear":"Automatik","pano":true,"ahk":true,"priority":"high","notes":"...","imageUrl":"https://..."}]}. imageUrl nur angeben, wenn das tatsächliche Foto zur exakt gleichen Anzeige nachweislich gehört. Diesen JSON-Code kann ich in mein Fahrzeugradar-Dashboard übernehmen.`;
+const SEARCH_BRIEF=`Bitte suche tagesaktuell nach tatsächlich überprüfbaren Gebrauchtwagen-Inseraten für meine Autosuche: Priorität Opel Insignia B Sports Tourer, bevorzugt 1.5 Turbo 165 PS Benziner, alternativ außergewöhnlich gute 2.0 Diesel; Panorama-/Schiebedach wichtig (öffnend bevorzugt), Automatik gern, Schalter ok, AHK/Keyless positiv. Kaufpreis maximal 10.000 EUR; Angebotspreise bis 11.500 EUR nur falls Verhandlung auf 10.000 EUR nachvollziehbar realistisch. Umkreis Moers 250 km bevorzugt, deutschlandweit bei passenden Angeboten. Unfallwagen und 1.2 PureTech ausschließen. Bereits verkauft/gelöscht und nicht wieder empfehlen: Kleinanzeigen-IDs 3538304317, 3537166161, 3531164885, 3514610789; Bocholt mit gelöschter Anzeige ebenfalls ausschließen. Bitte echte Direkteinträge, Verfügbarkeit soweit prüfbar, Preis/Kilometerstand/Zustand/Ausstattung plausibilisieren, Duplikate vermeiden und niemals Inserate erfinden. Gib mir nach deiner kurzen Bewertung zusätzlich einen kopierbaren JSON-Codeblock im Format {"vehicles":[{"title":"...","url":"https://...","price":9900,"km":120000,"year":2018,"location":"...","fuel":"Benzin","generation":"B","gear":"Automatik","pano":true,"ahk":true,"priority":"high","notes":"...","imageUrl":"https://..."}]}. imageUrl nur angeben, wenn das tatsächliche Foto zur exakt gleichen Anzeige nachweislich gehört. Diesen JSON-Code kann ich in mein Fahrzeugradar-Dashboard übernehmen.`;
 function fillChatLink(){const href='https://chatgpt.com/?q='+encodeURIComponent(SEARCH_BRIEF);document.querySelectorAll('[data-chat-link]').forEach(a=>a.href=href);}
 function parseChatPayload(raw){
   const code=raw.match(/```(?:json)?\s*([\s\S]*?)```/i);const text=(code?code[1]:raw).trim();
@@ -359,7 +543,7 @@ async function refreshFeed({quiet=false}={}){if(feedInProgress)return;const url=
 }
 function download(filename,contents){const blob=new Blob([contents],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
 function exportBackup(){const data=JSON.stringify({format:'fahrzeugradar-backup',savedAt:new Date().toISOString(),...store},null,2);download('fahrzeugradar-backup-'+new Date().toISOString().slice(0,10)+'.json',data);toast('Datensicherung heruntergeladen.');}
-async function handleImport(file){if(!file)return;try{const raw=JSON.parse(await file.text());if(raw.format==='fahrzeugradar-backup'&&Array.isArray(raw.vehicles)){if(!confirm('Backup importieren? Alle derzeitigen lokalen Fahrzeugdaten werden dadurch ersetzt.'))return;store={version:1,settings:{...DEFAULTS,...(raw.settings||{})},dismissed:Array.from(new Set([...EXCLUDED_IDS,...(raw.dismissed||[])])),vehicles:raw.vehicles.map(v=>norm(v)).filter(Boolean)};save();setView('all');toast(`${store.vehicles.length} Fahrzeuge aus Backup wiederhergestellt.`);}else{const stat=importFeed(raw);setView('inbox');toast(`${stat.added} Vorschläge importiert, ${stat.updated} aktualisiert, ${stat.skipped} übersprungen.`);}}catch(e){toast('Import fehlgeschlagen: '+(e.message||e));}finally{$('fileImport').value='';}}
+async function handleImport(file){if(!file)return;try{const raw=JSON.parse(await file.text());if(raw.format==='fahrzeugradar-backup'&&Array.isArray(raw.vehicles)){if(!confirm('Backup importieren? Alle derzeitigen lokalen Fahrzeugdaten werden dadurch ersetzt.'))return;store={version:1,settings:{...DEFAULTS,...(raw.settings||{})},rankings:cleanRankings(raw.rankings),dismissed:Array.from(new Set([...EXCLUDED_IDS,...(raw.dismissed||[])])),vehicles:raw.vehicles.map(v=>norm(v)).filter(Boolean)};save();setView('all');toast(`${store.vehicles.length} Fahrzeuge aus Backup wiederhergestellt.`);}else{const stat=importFeed(raw);setView('inbox');toast(`${stat.added} Vorschläge importiert, ${stat.updated} aktualisiert, ${stat.skipped} übersprungen.`);}}catch(e){toast('Import fehlgeschlagen: '+(e.message||e));}finally{$('fileImport').value='';}}
 function resetData(){if(!confirm('Wirklich alle lokalen Notizen, Entscheidungen und Favoriten löschen und die Startauswahl neu laden?'))return;store=defaultStore();save();setView('all');toast('Startauswahl wiederhergestellt.');}
 function init(){injectIcons(document);$('footerDate').textContent=new Intl.DateTimeFormat('de-DE',{dateStyle:'medium'}).format(new Date());
   // Scoped click handling. No inline JS needed, works offline.
@@ -369,6 +553,7 @@ function init(){injectIcons(document);$('footerDate').textContent=new Intl.DateT
   });
   document.querySelectorAll('#btnAddTop,#btnHeroAdd').forEach(b=>b.addEventListener('click',()=>openEditor()));
   $('btnHeroInbox').addEventListener('click',()=>setView('inbox'));
+  $('btnResetRanking').addEventListener('click',()=>{if(!isRankingView())return;if(!confirm('Deine individuelle Reihenfolge in dieser Kategorie zuruecksetzen?'))return;delete store.rankings[view];save();render();toast('Rangliste nach Suchprofil neu sortiert.');});
   fillChatLink();$('btnChatImport').addEventListener('click',importChatText);$('btnCopySearch').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(SEARCH_BRIEF);toast('Suchauftrag kopiert.');}catch(e){$('chatImportText').value=SEARCH_BRIEF;toast('Suchauftrag im Textfeld eingefügt – zum Kopieren markieren.');}});
   $('btnCheckFeed').addEventListener('click',()=>refreshFeed());$('btnSyncNow').addEventListener('click',()=>refreshFeed());
   $('searchInput').addEventListener('input',e=>{q=e.target.value.trim();render();});

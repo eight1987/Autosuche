@@ -50,7 +50,7 @@
 .ranking-hub-heading h2{margin:0;color:#20354c;font-size:24px;letter-spacing:-.8px}
 .ranking-hub-heading p{margin:7px 0 0;color:#758397;font-size:12px;line-height:1.5}
 .ranking-hub-note{white-space:nowrap;font-size:10px;font-weight:750;color:#2a7d63;padding:8px 10px;border-radius:7px;background:#e5f5ec}
-.ranking-category-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.ranking-category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
 .rank-tile{position:relative;background:white;text-align:left;border:1px solid #e4ecf2;border-radius:13px;padding:15px;display:flex;flex-direction:column;align-items:stretch;min-width:0;min-height:179px;box-shadow:var(--shadow);transition:transform .15s,border-color .15s,box-shadow .15s;color:#234056}
 .rank-tile:hover,.rank-tile:focus-visible{transform:translateY(-2px);border-color:#83cdb1;box-shadow:0 14px 30px rgba(22,58,76,.12)}
 .rank-tile.selected{background:linear-gradient(148deg,#e5f8ed,#ffffff 75%);border-color:#7ac7a8;box-shadow:inset 0 0 0 1px #9cddbd}
@@ -139,6 +139,7 @@
         <button class="nav-link" data-view="rank-b-diesel"><span class="nav-icon" data-svg="fuel"></span><span>Insignia B · Diesel</span><span class="nav-count" id="nav-rank-b-diesel">0</span></button>
         <button class="nav-link" data-view="rank-a"><span class="nav-icon" data-svg="car"></span><span>Insignia A</span><span class="nav-count" id="nav-rank-a">0</span></button>
         <button class="nav-link" data-view="rank-overall"><span class="nav-icon" data-svg="trophy"></span><span>Gesamtranking</span><span class="nav-count" id="nav-rank-overall">0</span></button>
+        <button class="nav-link" data-view="rank-over-budget"><span class="nav-icon" data-svg="alert"></span><span>Über Budget &gt; 11.000 €</span><span class="nav-count" id="nav-rank-over-budget">0</span></button>
       </nav>
       <div class="nav-label label-lower">VERWALTUNG</div>
       <nav class="nav-links"><button class="nav-link" data-view="settings"><span class="nav-icon" data-svg="settings"></span><span>Einstellungen & Sync</span></button></nav>
@@ -164,7 +165,7 @@
         <section class="stats" aria-label="Kennzahlen"><article class="stat-card"><div class="stat-top"><span>Aktive Kandidaten</span><span class="stat-icon blue" data-svg="car"></span></div><div class="stat-main" id="stat-active">0</div><div class="stat-meta">Merkliste + neue Vorschläge</div></article><article class="stat-card"><div class="stat-top"><span>Noch zu entscheiden</span><span class="stat-icon peach" data-svg="bell"></span></div><div class="stat-main" id="stat-inbox">0</div><div class="stat-meta">Warten auf deine Entscheidung</div></article><article class="stat-card"><div class="stat-top"><span>Deine Top-Favoriten</span><span class="stat-icon yellow" data-svg="star"></span></div><div class="stat-main" id="stat-favorites">0</div><div class="stat-meta">Mit Stern markiert</div></article><article class="stat-card"><div class="stat-top"><span>Aussortiert</span><span class="stat-icon gray" data-svg="archive"></span></div><div class="stat-main" id="stat-archived">0</div><div class="stat-meta">Aus aktiver Suche entfernt</div></article></section>
 
         <section class="ranking-hub" id="rankingHub" aria-labelledby="rankingHubTitle">
-          <div class="ranking-hub-heading"><div><div class="section-kicker">DEINE AUSWAHL NACH MODELL & MOTOR</div><h2 id="rankingHubTitle">Deine f&uuml;nf Favoriten-Ranglisten</h2><p>Klicke auf eine Kategorie und sieh sofort die aktuelle Reihenfolge. Kandidaten lassen sich jederzeit verschieben.</p></div><span class="ranking-hub-note">Nur &bdquo;Weiterverfolgen&ldquo;</span></div>
+          <div class="ranking-hub-heading"><div><div class="section-kicker">DEINE AUSWAHL NACH MODELL & MOTOR</div><h2 id="rankingHubTitle">Deine sechs Fahrzeug-Kategorien</h2><p>Klicke auf eine Kategorie. Angebote über 11.000 € werden separat geführt; fehlende Preise bleiben als ungeprüft markiert.</p></div><span class="ranking-hub-note">Über 11.000 € = eigene Kategorie</span></div>
           <div class="ranking-category-grid" id="rankingCategoryGrid"></div>
         </section>
         <section class="listing-section"><div class="section-heading"><div><div class="section-kicker" id="sectionKicker">DEINE AUSWAHL</div><h2 id="sectionTitle">Fahrzeuge im Überblick</h2><p class="section-intro" id="sectionIntro">Alle noch aktiven Angebote. Anzeigenpreise und Verfügbarkeit bitte im Original prüfen.</p></div><div class="section-buttons"><a class="btn btn-outline btn-small" data-chat-link href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"><span data-svg="search"></span> In ChatGPT suchen</a><button class="btn btn-outline btn-small" id="btnCheckFeed"><span data-svg="refresh"></span> Daten-Feed prüfen</button></div></div>
@@ -175,14 +176,14 @@
       </div>
 
       <section class="settings-screen" id="settingsScreen" hidden><div class="settings-header"><div class="section-kicker">KONTROLLE & DATEN</div><h1>Einstellungen & Synchronisierung</h1><p>Das Dashboard funktioniert auch ohne Anmeldung. Du kannst es kostenlos lokal nutzen oder online veröffentlichen.</p></div>
-        <div class="settings-grid"><article class="settings-card"><div class="settings-icon" data-svg="sliders"></div><h3>Dein Budget</h3><p>Die Preiswarnungen auf den Fahrzeugkarten orientieren sich an diesen Grenzen.</p><div class="field-grid"><label>Kaufobergrenze (€)<input type="number" id="settingBudget" min="1000" step="100"></label><label>Prüfen bis (€)<input type="number" id="settingStretch" min="1000" step="100"></label></div><button class="btn btn-primary" id="btnSaveBudget">Budget speichern</button></article>
+        <div class="settings-grid"><article class="settings-card"><div class="settings-icon" data-svg="star"></div><h3>Favoriten und Importlisten</h3><p>Fahrzeugradar 5.0: Sechs Kategorien, davon „Über Budget“ für bekannte Angebotspreise über 11.000 €. Die mitgelieferte Fahrzeugliste enthält 41 eindeutige Inseratslinks; du importierst sie einmalig unter Datensicherung. Preise und Dachausstattung sind teilweise noch ungeklärt.</p><div class="status-note">Einmaliger Import, keine laufende Verbindung zu ChatGPT. Vorhandene Favoriten, Streichungen, Notizen und deine eigene Reihenfolge bleiben bestehen. Angebote ohne gesicherten Direktlink sind entsprechend markiert.</div></article><article class="settings-card"><div class="settings-icon" data-svg="sliders"></div><h3>Dein Budget</h3><p>Die Preiswarnungen auf den Fahrzeugkarten orientieren sich an diesen Grenzen.</p><div class="field-grid"><label>Kaufobergrenze (€)<input type="number" id="settingBudget" min="1000" step="100"></label><label>Prüfen bis (€)<input type="number" id="settingStretch" min="1000" step="100"></label></div><button class="btn btn-primary" id="btnSaveBudget">Budget speichern</button></article>
         <article class="settings-card"><div class="settings-icon" data-svg="refresh"></div><h3>Neue Fahrzeuge automatisch einlesen</h3><p>Wenn ein öffentlicher JSON-Feed hinterlegt ist, prüft das Dashboard ihn beim Öffnen und danach alle 15 Minuten. Neue Anzeigen landen in „Neue Vorschläge“.</p><label>Feed-Adresse (optional)<input type="url" id="settingFeed" placeholder="https://.../feed.json"></label><div class="feed-help">Ohne eigene Adresse wird auf einer veröffentlichten Webseite die mitgelieferte <code>feed.json</code> verwendet.</div><div class="settings-actions"><button class="btn btn-primary" id="btnSaveFeed">Feed speichern</button><button class="btn btn-outline" id="btnSyncNow">Jetzt einlesen</button></div><div id="feedMessage" class="status-note" aria-live="polite"></div></article>
-        <article class="settings-card"><div class="settings-icon" data-svg="download"></div><h3>Datensicherung</h3><p>Deine Entscheidungen und Notizen werden in diesem Browser gespeichert. Exportiere eine Sicherung, um sie später oder auf einem anderen Gerät einzuspielen.</p><div class="settings-actions"><button class="btn btn-primary" id="btnExport"><span data-svg="download"></span> Backup speichern</button><button class="btn btn-outline" id="btnImport"><span data-svg="upload"></span> Backup einlesen</button></div><div class="status-note">Beim Backup-Import werden die lokalen Daten ersetzt. Vorher am besten exportieren.</div></article>
+        <article class="settings-card"><div class="settings-icon" data-svg="download"></div><h3>Datensicherung</h3><p>Deine Entscheidungen und Notizen werden in diesem Browser gespeichert. Exportiere eine Sicherung, um sie später oder auf einem anderen Gerät einzuspielen.</p><div class="settings-actions"><button class="btn btn-primary" id="btnExport"><span data-svg="download"></span> Backup speichern</button><button class="btn btn-outline" id="btnImport"><span data-svg="upload"></span> Fahrzeugliste / Backup importieren</button></div><div class="status-note">Unsere neue Datei <code>Fahrzeuge_importieren.json</code> ergänzt deine Merkliste ohne Überschreiben. Nur ein vollständiger Backup-Import ersetzt bestehende Daten. Vorher sichern.</div></article>
         <article class="settings-card"><div class="settings-icon" data-svg="sparkles"></div><h3>ChatGPT → Fahrzeugradar</h3><p>Mit einem Klick den passenden Suchauftrag in ChatGPT öffnen. Ein JSON-Codeblock aus der Antwort kann hier eingefügt werden: Neue Anzeigen landen in deiner Prüfliste, Duplikate und gestrichene IDs werden erkannt.</p><div class="settings-actions"><a class="btn btn-primary" data-chat-link href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">Suchauftrag in ChatGPT öffnen</a><button class="btn btn-outline" id="btnCopySearch">Suchauftrag kopieren</button></div><label for="chatImportText">ChatGPT-JSON oder Anzeigenlinks einfügen</label><textarea class="chat-import-area" id="chatImportText" spellcheck="false" placeholder='{"vehicles":[{"title":"Insignia B ...","url":"https://www.kleinanzeigen.de/s-anzeige/...","price":9850,"imageUrl":"https://img.kleinanzeigen.de/..."}]}'></textarea><div class="settings-actions"><button class="btn btn-primary" id="btnChatImport"><span data-svg="upload"></span> Neue Funde übernehmen</button></div><p class="chat-import-help">Auch ein Ein-Klick-Importlink funktioniert auf der veröffentlichten Webseite: #radar=URL-kodiertes JSON. Die Website selbst hat keinen Zugriff auf diesen Chat.</p></article>
         <article class="settings-card"><div class="settings-icon" data-svg="info"></div><h3>Wichtig zu wissen</h3><p><strong>ChatGPT-Import eingerichtet, aber nicht vollautomatisch:</strong> Zum Übernehmen von ChatGPT-Treffern muss der JSON-Code eingefügt oder ein Importlink geöffnet werden. Ein öffentlicher Feed ist separat alle 15 Minuten abrufbar, braucht aber eine gepflegte Datenquelle.</p><p><strong>Originalbilder:</strong> Bei Anzeigen mit verifizierter Bildadresse zeigt die Karte das echte Inseratsfoto. Bilder werden vom Portal geladen und können jederzeit gesperrt oder gelöscht werden. Dann erscheint ein neutrales Symbolbild. Die Seite prüft Inserate nicht eigenständig auf Verkauf oder Löschung.</p><button class="btn btn-outline" id="btnReset">Lokale Daten zurücksetzen</button></article></div>
       </section>
 
-      <footer class="footer"><span>FAHRZEUGRADAR <span class="footer-sep">/</span> Privates Dashboard</span><span>Kein Abo · Keine Tracking-Cookies · Keine Werbung · Stand: <span id="footerDate"></span></span></footer>
+      <footer class="footer"><span>FAHRZEUGRADAR 5.0 <span class="footer-sep">/</span> Privates Dashboard</span><span>Kein Abo · Keine Tracking-Cookies · Keine Werbung · Stand: <span id="footerDate"></span></span></footer>
     </main>
   </div>
 
@@ -204,11 +205,13 @@ const EXCLUDED_IDS = [
   'kleinanzeigen:3514610789'  // Langenbernsdorf - geloescht
 ];
 const DEFAULTS = { budget:10000, stretch:11500, feedUrl:'' };
+const OVER_BUDGET_LIMIT = 11000; // Absolute Sonderkategorie; Kaufziel weiterhin <= 10.000 EUR.
+
 const SEED = [
   {
     title:'Opel Insignia B ST 2.0 CDTI OPC-Line – Uedem',
     url:'https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sportstourer-2-0-diesel-opc-line-vollausstattung/3524433773-216-1148',
-    price:10100, priceNote:'Zuletzt indexierter Preis; aktuelle Anzeige prüfen', km:172500, year:2017,
+    price:9900, priceNote:'Zuletzt öffentlich gelisteter Preis (16.11.2026); Anzeige erneut prüfen', km:172500, year:2017,
     imageUrl:'https://img.kleinanzeigen.de/api/v1/prod-ads/images/2a/2ac90a8a-fac3-474c-83cf-439eef88fd7a?rule=%24_59.AUTO',
     location:'Uedem, NRW', fuel:'Diesel', gear:'Schalter', power:170, pano:true, ahk:true, keyless:true,
     stage:'tracked', favorite:true, priority:'high', source:'Kleinanzeigen', color:'blue',
@@ -258,6 +261,210 @@ const SEED = [
     pano:true, ahk:true, keyless:true, stage:'inbox', favorite:false, priority:'low', source:'Kleinanzeigen', color:'sage',
     notes:'Geräumige 7-Sitzer-Alternative. Verkäufer nennt ausdrücklich eine verschlissene Kupplung und ausschließlich Verkauf an Händler/Gewerbe/Export.',
     warning:'ACHTUNG: Kupplung verschlissen; Verkauf laut Anbieter nur an Händler, Gewerbe oder Export. Für Privatkauf sehr ungeeignet.'
+  }
+];
+
+// Fahrzeugradar 4.0: einmaliger Import unserer bekannten Kandidaten.
+// Die Eintraege sind eine historische Merkliste, keine bestaetigte Live-Verfuegbarkeit.
+// Bereits bestehende persoenliche Daten und manuellen Rankingpositionen bleiben unveraendert.
+const CURATED_REVISION = 'favoriten-2026-11-16-v1';
+const CURATED_FAVORITES = [
+  {
+    "id": "curated:bad-salzungen-business-innovation-202611",
+    "title": "Opel Insignia B ST 2.0 Diesel Business Innovation - Bad Salzungen",
+    "url": "https://www.autouncle.de/de/d/229964969-gebraucht-2018-opel-insignia-business-innovation-170-ps",
+    "price": 9800,
+    "priceNote": "AutoUncle-Angebot vom 12.11.2026; Preis/Verfügbarkeit aktuell prüfen",
+    "km": 166000,
+    "year": 2018,
+    "location": "Bad Salzungen, TH",
+    "fuel": "Diesel",
+    "generation": "B",
+    "gear": "unknown",
+    "power": 170,
+    "pano": true,
+    "ahk": true,
+    "keyless": null,
+    "stage": "tracked",
+    "favorite": true,
+    "priority": "high",
+    "source": "AutoUncle (Vergleichslink)",
+    "color": "blue",
+    "notes": "Vorläufig zugeordneter Kandidat aus Bad Salzungen: blauer 2.0 CDTI Business Innovation. Panorama, AHK, HUD und Leder laut AutoUncle; genaue Anzeige und Verkäuferdetails bestätigen. Link führt zur Vergleichsseite, NICHT zur Originalanzeige.",
+    "warning": "Getriebe ungeklärt: Kleinanzeigen-Suchtext nennt Automatik, AutoUncle Schalter. Verkäufer befragen; keine Annahme treffen."
+  },
+  {
+    "id": "curated:saarlouis-insignia-b-diesel-170",
+    "title": "Opel Insignia B ST 2.0 Diesel 170 PS - Saarlouis",
+    "price": null,
+    "km": null,
+    "year": null,
+    "location": "Saarlouis, SL",
+    "fuel": "Diesel",
+    "generation": "B",
+    "gear": "Schalter",
+    "power": 170,
+    "pano": null,
+    "ahk": null,
+    "keyless": null,
+    "stage": "tracked",
+    "favorite": true,
+    "priority": "high",
+    "source": "Unsere Verkäuferauskunft",
+    "color": "silver",
+    "notes": "Laut Verkäufer Zahnriemen bereits gewechselt (geschätzt bei ca. 145.000 km), kleine Nockenwellenkette original, Kupplung/ZMS bei ca. 85.000 km erneuert. Service nach Anzeige, DPF/AGR/AdBlue bislang unauffällig. Link und aktuelle Konditionen ergänzen.",
+    "warning": "Originalanzeige und Preis nicht hinterlegt; Angaben sind Verkäuferauskünfte und noch zu verifizieren."
+  },
+  {
+    "id": "curated:stuttgart-b-benzin-pano-3552538861",
+    "title": "Opel Insignia B Sports Tourer Benziner mit Panorama - Stuttgart",
+    "price": 12990,
+    "priceNote": "Zuletzt bekannter Angebotspreis; nicht live verifiziert",
+    "km": null,
+    "year": null,
+    "location": "Stuttgart, BW",
+    "fuel": "Benzin",
+    "generation": "B",
+    "gear": "unknown",
+    "pano": true,
+    "ahk": null,
+    "keyless": null,
+    "stage": "tracked",
+    "favorite": true,
+    "priority": "normal",
+    "source": "Kleinanzeigen-ID 3552538861",
+    "color": "dark",
+    "notes": "Bekannter Kandidat mit Panoramadach. Kleinanzeigen-ID 3552538861; Original-Direktlink derzeit nicht sicher ermittelt. Reparierter Parkschaden wurde genannt. Nur interessant, falls Preisverhandlung auf maximal 10.000 EUR realistisch ist.",
+    "warning": "12.990 EUR liegen deutlich über dem Kaufbudget. Reparaturnachweise des Parkschadens und verbindlichen Endpreis prüfen."
+  },
+  {
+    "id": "curated:langenfeld-a-250-202611",
+    "title": "Opel Insignia A ST 2.0 SIDI 250 PS - Langenfeld",
+    "price": null,
+    "km": 175000,
+    "year": null,
+    "location": "Langenfeld, NRW",
+    "fuel": "Benzin",
+    "generation": "A",
+    "gear": "unknown",
+    "power": 250,
+    "pano": false,
+    "ahk": null,
+    "keyless": null,
+    "stage": "tracked",
+    "favorite": false,
+    "priority": "normal",
+    "source": "Unsere Verkäuferauskunft",
+    "color": "cream",
+    "notes": "Vorfacelift. Austauschmotor beim Einbau ca. 114.000 km, jetzt ca. 145.000 km; Karosserie ca. 175.000 km. Frischer TÜV; Wartung soll belegbar sein. Hinterachse beginnende Korrosion, Steuergeräte sollen noch angelernt werden. Kein Panoramadach.",
+    "warning": "Steuergeräte-Anlernung und Korrosion vor Kauf abschließend klären. Anzeigenlink nicht mehr sicher belegt."
+  },
+  {
+    "id": "curated:stassfurt-a-pano-automatik",
+    "title": "Opel Insignia A ST 1.6 Turbo Panorama Automatik - Staßfurt",
+    "price": null,
+    "km": null,
+    "year": null,
+    "location": "Staßfurt, ST",
+    "fuel": "Benzin",
+    "generation": "A",
+    "gear": "Automatik",
+    "pano": true,
+    "ahk": null,
+    "keyless": null,
+    "stage": "tracked",
+    "favorite": false,
+    "priority": "high",
+    "source": "Unsere Fahrzeugauswahl",
+    "color": "silver",
+    "notes": "Bekannte Vollausstattungs-Option: Panoramadach und Automatik. Lange Anfahrt. Anzeigenpreis, Kilometerstand und aktueller Status noch offen.",
+    "warning": "Direktlink und Verfügbarkeit noch nicht erneut bestätigt."
+  },
+  {
+    "id": "curated:bergkamen-a-business",
+    "title": "Opel Insignia A ST Business Edition - Bergkamen",
+    "price": null,
+    "km": null,
+    "year": null,
+    "location": "Bergkamen, NRW",
+    "fuel": "unknown",
+    "generation": "A",
+    "gear": "unknown",
+    "pano": false,
+    "ahk": null,
+    "keyless": null,
+    "stage": "tracked",
+    "favorite": false,
+    "priority": "normal",
+    "source": "Unsere Fahrzeugauswahl",
+    "color": "gray",
+    "notes": "Im bisherigen Vergleich als besonders günstige und vernünftige Option bewertet. Kein Panoramadach. Konkreten Motor, Preis, Kilometer und Direktlink ergänzen.",
+    "warning": "Daten und Verfügbarkeit noch ungeprüft."
+  },
+  {
+    "id": "curated:bruehl-a-250",
+    "title": "Opel Insignia A ST 2.0 SIDI 250 PS - Brühl",
+    "price": null,
+    "km": null,
+    "year": null,
+    "location": "Brühl, NRW",
+    "fuel": "Benzin",
+    "generation": "A",
+    "gear": "unknown",
+    "power": 250,
+    "pano": false,
+    "ahk": null,
+    "keyless": null,
+    "stage": "inbox",
+    "favorite": false,
+    "priority": "low",
+    "source": "Früherer Vergleich",
+    "color": "silver",
+    "notes": "Früherer Vergleichskandidat mit 250 PS, aber ohne Panoramadach. Nur nach erneuter Prüfung in die Merkliste übernehmen.",
+    "warning": "Aktiver Angebotsstatus und Direktlink unbekannt."
+  },
+  {
+    "id": "curated:edewecht-b-diesel-selection",
+    "title": "Opel Insignia B ST 2.0 Diesel Selection - Edewecht",
+    "price": null,
+    "km": null,
+    "year": null,
+    "location": "Edewecht, NI",
+    "fuel": "Diesel",
+    "generation": "B",
+    "gear": "unknown",
+    "power": 170,
+    "pano": null,
+    "ahk": null,
+    "keyless": null,
+    "stage": "inbox",
+    "favorite": false,
+    "priority": "normal",
+    "source": "Früherer Vergleich",
+    "color": "gray",
+    "notes": "2.0 Diesel 125 kW Selection Sports Tourer wurde in unserer Kandidatenliste geprüft. Ob weiterverfolgen, Preis, Panoramadach und Direktlink erneut entscheiden.",
+    "warning": "Aktueller Angebotsstatus unbekannt."
+  },
+  {
+    "id": "curated:ratingen-b-diesel",
+    "title": "Opel Insignia B Diesel - Ratingen",
+    "price": null,
+    "km": null,
+    "year": null,
+    "location": "Ratingen, NRW",
+    "fuel": "Diesel",
+    "generation": "B",
+    "gear": "unknown",
+    "pano": null,
+    "ahk": null,
+    "keyless": null,
+    "stage": "inbox",
+    "favorite": false,
+    "priority": "low",
+    "source": "Früherer Vergleich",
+    "color": "blue",
+    "notes": "Bekannter Vergleichskandidat aus Ratingen. Ausstattung, Preis, Direktlink und Entscheidung über weiteres Verfolgen noch offen.",
+    "warning": "Aktueller Angebotsstatus unbekannt."
   }
 ];
 
@@ -320,7 +527,8 @@ const RANKING_CATEGORIES = [
   {key:'rank-b-no-pano',index:'02',name:'Insignia B ohne Panorama',short:'B · Benzin · ohne Pano',description:'Benziner, bei denen fehlendes Pano bestaetigt wurde.',icon:'car'},
   {key:'rank-b-diesel',index:'03',name:'Insignia B als Diesel',short:'B · Diesel',description:'Alle vorgemerkten Insignia B Diesel, mit und ohne Panorama.',icon:'fuel'},
   {key:'rank-a',index:'04',name:'Insignia A',short:'Insignia A',description:'Alle vorgemerkten Insignia A, unabhaengig vom Motor.',icon:'car'},
-  {key:'rank-overall',index:'05',name:'Gesamtranking',short:'Gesamtranking',description:'Deine komplette aktive Merkliste, inklusive Alternativen.',icon:'trophy'}
+  {key:'rank-overall',index:'05',name:'Gesamtranking',short:'Gesamtranking',description:'Deine aktive Merkliste bis 11.000 € oder mit noch offenem Preis.',icon:'trophy'},
+  {key:'rank-over-budget',index:'06',name:'Über Budget',short:'Über 11.000 €',description:'Alle aktiven Fahrzeuge mit bekanntem Anzeigenpreis über 11.000 €.',icon:'alert'}
 ];
 const RANK_KEYS = new Set(RANKING_CATEGORIES.map(x=>x.key));
 function isRankingView(key=view){return RANK_KEYS.has(key);}
@@ -335,7 +543,11 @@ function generationOf(v){
 function isPetrol(v){return /^Benzin$/i.test(v.fuel);}
 function isDiesel(v){return /^Diesel$/i.test(v.fuel);}
 function belongsToRanking(v,key){
+  // Alle bekannten Angebotspreise über 11.000 EUR stehen exklusiv in der Sonderkategorie.
+  // Bei fehlendem Preis wird KEIN günstiger Preis unterstellt.
+  if(key==='rank-over-budget')return v.stage!=='archived' && v.price!==null && v.price>OVER_BUDGET_LIMIT;
   if(v.stage!=='tracked')return false;
+  if(v.price!==null && v.price>OVER_BUDGET_LIMIT)return false;
   const generation=generationOf(v);
   if(key==='rank-b-pano')return generation==='B'&&isPetrol(v)&&v.pano===true;
   if(key==='rank-b-no-pano')return generation==='B'&&isPetrol(v)&&v.pano===false;
@@ -390,24 +602,49 @@ function renderRankCard(v,index,total){
   const specs=[v.year||'EZ offen',v.km!=null?fmtNum(v.km)+' km':'km offen',v.fuel!=='unknown'?v.fuel:'Motor offen',v.gear!=='unknown'?v.gear:'Getriebe offen'].map(x=>esc(x));
   const features=[v.pano===true?'Panorama vorhanden':v.pano===false?'Kein Panorama':'Pano ungeklaert',v.ahk===true?'AHK':null,v.keyless===true?'Keyless':null].filter(Boolean).map(f=>`<span class="ranking-chip">${esc(f)}</span>`).join('');
   const disabled=Boolean(q);
-  return `<article class="ranking-entry" data-rank-id="${esc(v.id)}"><div class="ranking-place ${index===0?'podium':''}"><span>PLATZ</span><strong>${String(index+1).padStart(2,'0')}</strong><span>${index===0?'TOP':index===1?'SILBER':index===2?'BRONZE':'LISTE'}</span></div><div class="ranking-photo">${mediaArt(v,status)}</div><div class="ranking-detail"><div class="ranking-entry-eyebrow">${esc(v.location)} <span>&bull;</span> ${esc(v.source)} ${v.favorite?'<span class="ranking-star">&#9733; Favorit</span>':''}</div><h3>${esc(v.title)}</h3><div class="ranking-entry-summary"><strong>${fmtMoney(v.price)}</strong><span class="budget-pill ${budget.className}">${esc(budget.text)}</span></div><div class="ranking-specs">${specs.map(t=>`<span>${t}</span>`).join('')}</div><div class="ranking-chips">${features}</div>${v.warning?`<p class="ranking-warning">${esc(v.warning)}</p>`:''}<p class="ranking-note-text">${esc(v.notes||'Noch keine Notizen vorhanden.')}</p><div class="ranking-entry-actions">${v.url?`<a class="btn btn-primary btn-small" href="${esc(v.url)}" target="_blank" rel="noopener noreferrer">${icon('external')} Anzeige oeffnen</a>`:''}<button class="btn btn-outline btn-small" data-action="edit" data-id="${esc(v.id)}">${icon('pencil')} Bearbeiten</button><button class="btn btn-danger btn-small" data-action="archive" data-id="${esc(v.id)}">${icon('x')} Streichen</button></div></div><div class="ranking-move"><span>REIHENFOLGE</span><button data-action="rank-up" data-id="${esc(v.id)}" title="${esc(v.title)} einen Platz nach oben" aria-label="Einen Platz nach oben" ${atTop||disabled?'disabled':''}>${icon('chevron-up')}</button><button data-action="rank-down" data-id="${esc(v.id)}" title="${esc(v.title)} einen Platz nach unten" aria-label="Einen Platz nach unten" ${atBottom||disabled?'disabled':''}>${icon('chevron-down')}</button></div></article>`;
+  return `<article class="ranking-entry" data-rank-id="${esc(v.id)}"><div class="ranking-place ${index===0?'podium':''}"><span>PLATZ</span><strong>${String(index+1).padStart(2,'0')}</strong><span>${index===0?'TOP':index===1?'SILBER':index===2?'BRONZE':'LISTE'}</span></div><div class="ranking-photo">${mediaArt(v,status)}</div><div class="ranking-detail"><div class="ranking-entry-eyebrow">${esc(v.location)} <span>&bull;</span> ${esc(v.source)} ${v.favorite?'<span class="ranking-star">&#9733; Favorit</span>':''}</div><h3>${esc(v.title)}</h3><div class="ranking-entry-summary"><strong>${fmtMoney(v.price)}</strong><span class="budget-pill ${budget.className}">${esc(budget.text)}</span></div><div class="ranking-specs">${specs.map(t=>`<span>${t}</span>`).join('')}</div><div class="ranking-chips">${features}</div>${v.warning?`<p class="ranking-warning">${esc(v.warning)}</p>`:''}<p class="ranking-note-text">${esc(v.notes||'Noch keine Notizen vorhanden.')}</p><div class="ranking-entry-actions">${v.url?`<a class="btn btn-primary btn-small" href="${esc(v.url)}" target="_blank" rel="noopener noreferrer">${icon('external')} ${esc(v.source==='AutoUncle (Vergleichslink)'?'Vergleich oeffnen':'Anzeige oeffnen')}</a>`:''}<button class="btn btn-outline btn-small" data-action="edit" data-id="${esc(v.id)}">${icon('pencil')} Bearbeiten</button>${v.stage==='inbox'?`<button class="btn btn-accept btn-small" data-action="accept" data-id="${esc(v.id)}">${icon('check')} Weiterverfolgen</button>`:''}<button class="btn btn-danger btn-small" data-action="archive" data-id="${esc(v.id)}">${icon('x')} Streichen</button></div></div><div class="ranking-move"><span>REIHENFOLGE</span><button data-action="rank-up" data-id="${esc(v.id)}" title="${esc(v.title)} einen Platz nach oben" aria-label="Einen Platz nach oben" ${atTop||disabled?'disabled':''}>${icon('chevron-up')}</button><button data-action="rank-down" data-id="${esc(v.id)}" title="${esc(v.title)} einen Platz nach unten" aria-label="Einen Platz nach unten" ${atBottom||disabled?'disabled':''}>${icon('chevron-down')}</button></div></article>`;
 }
-function defaultStore(){return {version:1,settings:{...DEFAULTS},dismissed:[...EXCLUDED_IDS],rankings:{},vehicles:SEED.map(v=>norm({...v,addedAt:DATE_IMPORTED,updatedAt:DATE_IMPORTED},v.stage))};}
+function defaultStore(){return {version:1,settings:{...DEFAULTS},dismissed:[...EXCLUDED_IDS],rankings:{},curatedRevision:'',linkImportRevision:'',vehicles:SEED.map(v=>norm({...v,addedAt:DATE_IMPORTED,updatedAt:DATE_IMPORTED},v.stage))};}
 let ephemeral=false;
-function loadStore(){try{const data=JSON.parse(localStorage.getItem(STORE_KEY));if(data&&Array.isArray(data.vehicles)){return {version:1,settings:{...DEFAULTS,...(data.settings||{})},rankings:cleanRankings(data.rankings),dismissed:Array.isArray(data.dismissed)?Array.from(new Set([...EXCLUDED_IDS,...data.dismissed])):[...EXCLUDED_IDS],vehicles:data.vehicles.map(v=>{const normalized=norm(v);if(!normalized)return null;const seed=SEED.find(s=>listingId(s.url)===normalized.id);if(seed?.imageUrl&&!normalized.imageUrl)normalized.imageUrl=seed.imageUrl;return normalized;}).filter(Boolean)};}}catch(e){console.warn('storage unavailable',e);ephemeral=true;}return defaultStore();}
+function loadStore(){try{const data=JSON.parse(localStorage.getItem(STORE_KEY));if(data&&Array.isArray(data.vehicles)){return {version:1,settings:{...DEFAULTS,...(data.settings||{})},rankings:cleanRankings(data.rankings),curatedRevision:txt(data.curatedRevision||''),linkImportRevision:txt(data.linkImportRevision||''),dismissed:Array.isArray(data.dismissed)?Array.from(new Set([...EXCLUDED_IDS,...data.dismissed])):[...EXCLUDED_IDS],vehicles:data.vehicles.map(v=>{const normalized=norm(v);if(!normalized)return null;const seed=SEED.find(s=>listingId(s.url)===normalized.id);if(seed?.imageUrl&&!normalized.imageUrl)normalized.imageUrl=seed.imageUrl;return normalized;}).filter(Boolean)};}}catch(e){console.warn('storage unavailable',e);ephemeral=true;}return defaultStore();}
 let store=loadStore();
 let view='all',q='',panoOnly=false,petrolOnly=false,sort='priority',toastTimer,editorFocus;
 const $=id=>document.getElementById(id);
 function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(store));}catch(e){ephemeral=true;console.warn('save unavailable',e);}}
+function installCuratedFavoritesOnce(){
+  if(store.curatedRevision===CURATED_REVISION)return 0;
+  const occupied=new Set(store.vehicles.map(v=>v.id));
+  const blocked=new Set(store.dismissed);
+  let added=0;
+  for(const record of CURATED_FAVORITES){
+    const item=norm({...record,addedAt:DATE_IMPORTED,updatedAt:DATE_IMPORTED},record.stage||'tracked');
+    if(!item||occupied.has(item.id)||blocked.has(item.id))continue;
+    // The existing URL/ID is authoritative. An imported favourite never overwrites user decisions.
+    if(item.url&&store.vehicles.some(v=>v.url===item.url))continue;
+    store.vehicles.push(item);occupied.add(item.id);added++;
+  }
+  // Only migrate the untouched, known old seed price; never replace a user's own valuation.
+  const uedem=store.vehicles.find(v=>v.id==='kleinanzeigen:3524433773');
+  if(uedem?.price===10100&&uedem.priceNote==='Zuletzt indexierter Preis; aktuelle Anzeige prüfen'){
+    uedem.history=[...(uedem.history||[]),{price:10100,at:'2026-11-16'}].slice(-20);
+    uedem.price=9900;
+    uedem.priceNote='Zuletzt öffentlich gelistet mit 9.900 EUR (16.11.2026); Anzeige prüfen';
+    uedem.updatedAt=DATE_IMPORTED;
+  }
+  store.curatedRevision=CURATED_REVISION;
+  save();
+  return added;
+}
+
 function fmtMoney(v){return v==null?'Preis offen':new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);}
 function fmtNum(v){return v==null?'—':new Intl.NumberFormat('de-DE',{maximumFractionDigits:0}).format(v);}
 function counts(){const active=store.vehicles.filter(v=>v.stage!=='archived');return {active:active.length,inbox:store.vehicles.filter(v=>v.stage==='inbox').length,tracked:store.vehicles.filter(v=>v.stage==='tracked').length,favorites:store.vehicles.filter(v=>v.favorite&&v.stage!=='archived').length,archived:store.vehicles.filter(v=>v.stage==='archived').length};}
-function budgetInfo(v){if(v.price==null)return {className:'unknown',text:'Preis nicht erfasst'};const limit=Number(store.settings.budget)||10000,stretch=Number(store.settings.stretch)||11500;if(v.price<=limit)return {className:'',text:'Im Budget'};if(v.price<=stretch)return {className:'warn',text:'Nur mit Verhandlung'};return {className:'over',text:'Über Suchrahmen'};}
+function budgetInfo(v){if(v.price==null)return {className:'unknown',text:'Preis nicht geprüft'};const limit=Number(store.settings.budget)||10000;if(v.price>OVER_BUDGET_LIMIT)return {className:'over',text:'Über Budget > 11.000 €'};if(v.price<=limit)return {className:'',text:'Im Budget'};return {className:'warn',text:'Nur mit Verhandlung'};}
 function brandOf(v){if(/ford/i.test(v.title))return 'FORD';if(/renault/i.test(v.title))return 'RENAULT';return 'OPEL';}
 function carArt(){return `<svg class="car-silhouette" viewBox="0 0 600 190" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="paint" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#344f62"/><stop offset=".55" stop-color="#627c91"/><stop offset="1" stop-color="#28465a"/></linearGradient><linearGradient id="glass" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e2f1f9"/><stop offset="1" stop-color="#7292a3"/></linearGradient></defs><ellipse cx="300" cy="167" rx="254" ry="10" fill="#385d65" opacity=".18"/><path d="M48 131 Q46 119 64 115 L137 104 L198 65 Q210 56 236 56 H371 Q407 57 431 79 L479 110 L527 118 Q547 120 554 132 L559 152 L541 156 H509 A35 35 0 0 0 440 155 H166 A35 35 0 0 0 97 156 H69 Q45 155 48 131Z" fill="url(#paint)" stroke="#233e51" stroke-width="2.6"/><path d="M207 68 Q211 64 237 64 H357 L356 106 H151Z" fill="url(#glass)" opacity=".97"/><path d="M369 64 Q402 66 422 87 L455 109 H367Z" fill="url(#glass)"/><path d="M361 65v43M150 110h307" stroke="#294b5f" stroke-width="5"/><path d="M123 112h42M470 115h36" stroke="#b3c9d4" stroke-width="3" opacity=".8"/><path d="M87 125 50 130 52 143 84 144M535 130l17 3 4 11h-24" fill="#f4d2b5" opacity=".8"/><path d="M70 152h28m411 0h29" stroke="#19384c" stroke-width="6"/><path d="M199 114h15m173 0h15" stroke="#d5e4ed" stroke-width="3" stroke-linecap="round"/><circle cx="132" cy="156" r="29" fill="#1f303e" stroke="#e4eef2" stroke-width="3"/><circle cx="132" cy="156" r="17" fill="#90a5b1" stroke="#263b4d" stroke-width="5"/><circle cx="475" cy="156" r="29" fill="#1f303e" stroke="#e4eef2" stroke-width="3"/><circle cx="475" cy="156" r="17" fill="#90a5b1" stroke="#263b4d" stroke-width="5"/></svg>`;}
 function mediaArt(v,stat){
   const hasImage=Boolean(v.imageUrl),hasLink=Boolean(v.url);
-  const opener=hasLink?`<a class="vehicle-media-link" href="${esc(v.url)}" target="_blank" rel="noopener noreferrer" title="Originalanzeige öffnen · ${esc(v.title)}">`:'<div class="vehicle-media-link">';
+  const opener=hasLink?`<a class="vehicle-media-link" href="${esc(v.url)}" target="_blank" rel="noopener noreferrer" title="${esc(v.source==='AutoUncle (Vergleichslink)'?'Vergleichsseite öffnen':'Originalanzeige öffnen')} · ${esc(v.title)}">`:'<div class="vehicle-media-link">';
   const closer=hasLink?'</a>':'</div>';
   const image=hasImage?`<img class="vehicle-photo" src="${esc(v.imageUrl)}" alt="Originalfoto des angebotenen Fahrzeugs, sofern noch erreichbar" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:'';
   return `<div class="vehicle-art ${esc(v.color)} ${hasImage?'has-photo':''}">${opener}${image}${carArt()}${closer}<span class="art-mark">${hasImage?'FOTO AUS ANZEIGE':brandOf(v)+' · SYMBOLBILD'}</span><span class="art-status ${stat[0]}">${stat[1]}</span></div>`;
@@ -436,7 +673,7 @@ function filtered(){let arr=store.vehicles.filter(v=>{
   return srank(a.stage)-srank(b.stage) || Number(b.favorite)-Number(a.favorite) || ({high:0,normal:1,low:2}[a.priority]-{high:0,normal:1,low:2}[b.priority]) || String(b.addedAt).localeCompare(String(a.addedAt));
  });return arr;
 }
-const VIEW_LABELS={all:['DEINE AUSWAHL','Fahrzeuge im Überblick','Alle noch aktiven Angebote. Anzeigenpreise und Verfügbarkeit bitte im Original prüfen.'],inbox:['NEUE VORSCHLÄGE','Worüber möchtest du entscheiden?','Jeden Vorschlag mit Weiterverfolgen übernehmen oder mit Streichen ausblenden.'],tracked:['AKTIVE MERKLISTE','Diese Fahrzeuge verfolgst du','Deine ausgewählten Kandidaten. Direktlinks und Notizen immer griffbereit.'],favorites:['TOP-AUSWAHL','Deine Top-Favoriten','Die Angebote mit Stern – für die engere Wahl.'],archived:['AUSGESCHLOSSEN','Diese Fahrzeuge sind gestrichen','Hier bleiben gestrichene Einträge für den Fall, dass du sie wiederherstellen möchtest.'],'rank-b-pano':['RANGLISTE 01','Insignia B mit Panorama / Benziner','Nur vorgemerkte Benziner mit bestaetigtem Panorama- oder Schiebedach.'],'rank-b-no-pano':['RANGLISTE 02','Insignia B ohne Panorama / Benziner','Nur vorgemerkte Benziner, bei denen kein Panorama vorhanden ist.'],'rank-b-diesel':['RANGLISTE 03','Insignia B als Diesel','Vorgemerkte Diesel, unabhaengig davon, ob ein Panoramadach vorhanden ist.'],'rank-a':['RANGLISTE 04','Opel Insignia A','Alle vorgemerkten Insignia A im direkten Vergleich.'],'rank-overall':['RANGLISTE 05','Dein Gesamtranking','Alle vorgemerkten Fahrzeuge im gemeinsamen Vergleich, inklusive Alternativen.']};
+const VIEW_LABELS={all:['DEINE AUSWAHL','Fahrzeuge im Überblick','Alle noch aktiven Angebote. Anzeigenpreise und Verfügbarkeit bitte im Original prüfen.'],inbox:['NEUE VORSCHLÄGE','Worüber möchtest du entscheiden?','Jeden Vorschlag mit Weiterverfolgen übernehmen oder mit Streichen ausblenden.'],tracked:['AKTIVE MERKLISTE','Diese Fahrzeuge verfolgst du','Deine ausgewählten Kandidaten. Direktlinks und Notizen immer griffbereit.'],favorites:['TOP-AUSWAHL','Deine Top-Favoriten','Die Angebote mit Stern – für die engere Wahl.'],archived:['AUSGESCHLOSSEN','Diese Fahrzeuge sind gestrichen','Hier bleiben gestrichene Einträge für den Fall, dass du sie wiederherstellen möchtest.'],'rank-b-pano':['RANGLISTE 01','Insignia B mit Panorama / Benziner','Nur vorgemerkte Benziner mit bestaetigtem Panorama- oder Schiebedach.'],'rank-b-no-pano':['RANGLISTE 02','Insignia B ohne Panorama / Benziner','Nur vorgemerkte Benziner, bei denen kein Panorama vorhanden ist.'],'rank-b-diesel':['RANGLISTE 03','Insignia B als Diesel','Vorgemerkte Diesel, unabhaengig davon, ob ein Panoramadach vorhanden ist.'],'rank-a':['RANGLISTE 04','Opel Insignia A','Alle vorgemerkten Insignia A im direkten Vergleich.'],'rank-overall':['RANGLISTE 05','Dein Gesamtranking','Alle vorgemerkten Fahrzeuge bis 11.000 € oder ohne überprüften Preis. Offene Angaben ausdrücklich prüfen.'],'rank-over-budget':['EXTRA-KATEGORIE 06','Über Budget – über 11.000 €','Alle aktiven Angebote mit bekanntem Preis über 11.000 €. Diese werden aus den übrigen Ranglisten ausgeblendet.']};
 function render(){
   const c=counts();$('stat-active').textContent=c.active;$('stat-inbox').textContent=c.inbox;$('stat-favorites').textContent=c.favorites;$('stat-archived').textContent=c.archived;$('heroActiveCount').textContent=c.active;$('heroInboxCount').textContent=c.inbox;
   ['all','inbox','tracked','favorites','archived'].forEach(k=>{$('nav-'+k).textContent=(k==='all'?c.active:c[k]);});
@@ -454,7 +691,7 @@ function render(){
   const allRanked=ranking?rankedVehicles(view):[];
   const cars=ranking?allRanked.filter(v=>!q||[v.title,v.location,v.notes,v.fuel,v.gear,v.source].join(' ').toLowerCase().includes(q.toLowerCase())):filtered();
   $('resultCount').textContent=`${cars.length} ${cars.length===1?'Fahrzeug':'Fahrzeuge'}`;
-  $('resultHintText').textContent=ranking?'Nur Fahrzeuge unter Weiterverfolgen - gestrichene Angebote werden nicht gezeigt.':'Streichungen bleiben aus dem aktiven Radar';
+  $('resultHintText').textContent=view==='rank-over-budget'?'Auch neue Vorschläge erscheinen hier bei Preis über 11.000 €; unbekannte Preise sind nicht einsortierbar.':ranking?'Nur Fahrzeuge unter Weiterverfolgen; ein Preis offen bedeutet NICHT unter Budget.':'Streichungen bleiben aus dem aktiven Radar';
   const grid=$('vehicleGrid');
   grid.innerHTML=cars.length?(ranking?cars.map(v=>renderRankCard(v,allRanked.indexOf(v),allRanked.length)).join(''):cars.map(renderCard).join('')):`<div class="empty"><div class="empty-symbol">${icon(ranking?'trophy':view==='inbox'?'check':view==='archived'?'archive':'search')}</div><h3>${ranking?'Hier ist noch kein Kandidat gelistet.':view==='inbox'?'Alles entschieden!':'Hier ist gerade nichts gelistet.'}</h3><p>${ranking?'Uebernimm passende Fahrzeuge unter Neue Vorschlaege mit Weiterverfolgen. Pruefe bei fehlender Zuordnung auch Kraftstoff, Insignia-Generation und Panoramadach im Bearbeiten-Dialog.':view==='inbox'?'Alle neuen Vorschlaege wurden bearbeitet. Neue Funde aus einer Datenquelle erscheinen spaeter hier.':'Passe deine Filter an oder fuege selbst eine Anzeige hinzu.'}</p><button class="btn btn-primary" data-action="open-add">${icon('plus')} Anzeige hinzufuegen</button></div>`;
   injectIcons(grid);monitorImages(grid);
@@ -496,7 +733,7 @@ function importFeed(payload){const records=Array.isArray(payload)?payload:Array.
     if(!candidate.url){skipped++;continue;}
     const id=listingId(candidate.url)||candidate.id;candidate.id=id;
     if(blocked.has(id)){skipped++;continue;}
-    const old=store.vehicles.find(v=>v.id===id||(v.url&&v.url===candidate.url));
+    const old=findStoredListing(candidate);
     if(old){let changed=false;
       if(candidate.price!==null&&old.price!==candidate.price){if(old.price!=null)old.history.push({price:old.price,at:new Date().toISOString()});old.history=old.history.slice(-20);old.price=candidate.price;old.priceNote='Preis aus Daten-Feed';changed=true;}
       if(candidate.imageUrl&&old.imageUrl!==candidate.imageUrl){old.imageUrl=candidate.imageUrl;changed=true;}
@@ -507,6 +744,64 @@ function importFeed(payload){const records=Array.isArray(payload)?payload:Array.
       if(changed){old.updatedAt=new Date().toISOString();updated++;}else skipped++;
     }else{candidate.stage='inbox';candidate.favorite=false;candidate.addedAt=new Date().toISOString();candidate.updatedAt=candidate.addedAt;store.vehicles.unshift(candidate);added++;}
   }if(added||updated)save();return {added,updated,skipped};
+}
+// Einmaliger Import einer vom Nutzer ausdrücklich übergebenen Linkliste.
+// Im Gegensatz zum RSS-Feed darf diese Liste den gewünschten Status "tracked" setzen.
+// Nie bestehende Entscheidungen oder Notizen überschreiben.
+function findStoredListing(candidate){
+  const canonical=listingId(candidate.url)||candidate.id;
+  const adNumber=canonical.startsWith('kleinanzeigen:')?canonical.split(':')[1]:'';
+  return store.vehicles.find(v=>v.id===canonical||(v.url&&v.url===candidate.url)||(adNumber&&v.id.startsWith('curated:')&&v.id.endsWith(adNumber)));
+}
+function importCuratedList(payload){
+  if(payload?.format!=='fahrzeugradar-curated-import-v1'||!Array.isArray(payload.vehicles))throw Error('Keine kuratierte Fahrzeugliste.');
+  const blocked=new Set(store.dismissed);let added=0,updated=0,skipped=0;
+  const now=new Date().toISOString();
+  for(const raw of payload.vehicles){
+    const candidate=norm(raw,'tracked');
+    if(!candidate?.url){skipped++;continue;}
+    const canonical=listingId(candidate.url)||candidate.id;
+    if(blocked.has(canonical)||blocked.has(candidate.id)){skipped++;continue;}
+    const old=findStoredListing(candidate);
+    if(old){
+      // Ein bereits gestrichenes Fahrzeug wird niemals wiederbelebt.
+      if(old.stage==='archived'){skipped++;continue;}
+      let changed=false;
+      for(const key of ['url','imageUrl'])if(!old[key]&&candidate[key]){old[key]=candidate[key];changed=true;}
+      for(const key of ['price','km','year','power'])if(old[key]===null&&candidate[key]!==null){old[key]=candidate[key];changed=true;}
+      for(const key of ['generation','fuel','gear'])if((old[key]==='auto'||old[key]==='unknown')&&candidate[key]!=='auto'&&candidate[key]!=='unknown'){old[key]=candidate[key];changed=true;}
+      for(const key of ['pano','ahk','keyless'])if(old[key]===null&&candidate[key]!==null){old[key]=candidate[key];changed=true;}
+      if(!old.priceNote&&candidate.priceNote){old.priceNote=candidate.priceNote;changed=true;}
+      if(!old.notes&&candidate.notes){old.notes=candidate.notes;changed=true;}
+      // Nur die alte Standardaussage zum fehlenden Stuttgart-Link aktualisieren;
+      // andere persönliche Notizen werden nicht verändert.
+      if(canonical==='kleinanzeigen:3552538861' && old.notes.includes('Original-Direktlink derzeit nicht sicher ermittelt')){
+        old.notes=old.notes.replace('Original-Direktlink derzeit nicht sicher ermittelt',
+          'Original-Direktlink aus deiner Liste ergänzt, Anzeige selbst noch nicht live geprüft');changed=true;
+      }
+      if(!old.warning&&candidate.warning){old.warning=candidate.warning;changed=true;}
+      if(changed){old.updatedAt=now;updated++;}else skipped++;
+    }else{
+      candidate.id=canonical;
+      candidate.stage=raw.stage==='inbox'?'inbox':'tracked';
+      candidate.favorite=Boolean(raw.favorite);
+      candidate.addedAt=now;candidate.updatedAt=now;
+      store.vehicles.push(candidate);added++;
+    }
+  }
+  if(added||updated)save();
+  return {added,updated,skipped};
+}
+// Diese vom Nutzer ausdrücklich gewünschte Liste wird einmalig in den bestehenden Browserdaten
+// ergänzt. Das Setzen von status/Ranking auf dem Gerät bleibt danach allein beim Nutzer.
+const USER_LINKS_REVISION='insignia-list-2026-11-16-41';
+const USER_LINKS_DATA={"format":"fahrzeugradar-curated-import-v1","createdAt":"2026-11-16","description":"41 eindeutige Links aus der Nutzerliste. Angaben nur aus Titel und bisherigem Gespräch; fehlende Preise NICHT geschätzt. Einmaliger Import auf dem eigenen Gerät, kein Überschreiben der Favoriten.","overBudgetThreshold":11000,"vehicles":[{"title":"Insignia A ST · 1.6 Turbo OPC Innovation","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-6-turbo-opc-innovation-st-innov-/3521977270-216-4840","id":"kleinanzeigen:3521977270","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"A","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia A"},{"title":"Insignia A ST · 2.0 Turbo 4x4 Sport, Xenon","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-st-2-0-turbo-4x4-sport-aut-xenon-navi-/3465773408-216-1773","id":"kleinanzeigen:3465773408","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"A","fuel":"Benzin","gear":"Automatik","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia A"},{"title":"Insignia A ST · 2.0 SIDI Turbo Innovation","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-st-2-0-sidi-turbo-innovation-business/3532421153-216-1863","id":"kleinanzeigen:3532421153","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"A","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia A"},{"title":"Ford Mondeo Turnier Titanium · Panorama, AHK","url":"https://www.kleinanzeigen.de/s-anzeige/ford-mondeo-turnier-titanium-navi-ahk-pano-pdc-v-h/3526388550-216-2022","id":"kleinanzeigen:3526388550","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"other","fuel":"unknown","gear":"unknown","pano":true,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Panorama steht im Titel, Einbau/Öffnungsfunktion im Inserat bestätigen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Alternative – Gesamtranking"},{"title":"Insignia ST · 2.0 Turbo Business Innovation OPC","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-sports-tourer-2-0-t-business-innovation-opc-1-hand-/3549378939-216-1158","id":"kleinanzeigen:3549378939","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia B Dynamic · Matrix-LED, AGR, Kamera","url":"https://www.kleinanzeigen.de/s-anzeige/opel-opel-insignia-b-dynamic-matrix-led-agr-kamera/3545642507-216-7401","id":"kleinanzeigen:3545642507","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B 1.5 Dynamic · LED, OnStar","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-5-dynamic-led-onstar-mirrorlink/3527546976-216-4665","id":"kleinanzeigen:3527546976","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B 1.5 Turbo 165 PS Business Innovation Automatik","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-5-turbo-121kw-business-innov-auto-/3509536713-216-5493","id":"kleinanzeigen:3509536713","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"Automatik","pano":null,"ahk":null,"power":165,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B Sports Tourer Dynamic (Angebot 3492623115)","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-dynamic/3492623115-216-4407","id":"kleinanzeigen:3492623115","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B Country Tourer Exclusive 4x4","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-country-tourer-exclusive-4x4/3535810045-216-1155","id":"kleinanzeigen:3535810045","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B ST 1.5 · Matrix-LED, Kamera","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-1-5-matrix-led-kamera/3553272049-216-8307","id":"kleinanzeigen:3553272049","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B ST Business Innovation 4x4","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-business-innovation-4x4/3554443081-216-4796","id":"kleinanzeigen:3554443081","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B ST 1.5 Turbo Innovation (3554212853)","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-5-turbo-b-sports-tourer-innovation/3554212853-216-4295","id":"kleinanzeigen:3554212853","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B Sports Tourer Dynamic (3556139017)","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-dynamic/3556139017-216-2164","id":"kleinanzeigen:3556139017","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia Country Tourer Exclusive · HUD, Standheizung, LED","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-country-tourer-exclusive-hud-stdhzg-led/3557618121-216-7957","id":"kleinanzeigen:3557618121","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B ST 2.0 CDTI Automatik · TÜV neu","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-2-0-cdti-automatik-tuev-neu/3560729933-216-1527","id":"kleinanzeigen:3560729933","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Diesel","gear":"Automatik","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Diesel"},{"title":"Insignia B 2.0 CDTI 170 PS Automatik","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-2-0-cdti-170ps-automatik/3494516211-216-4711","id":"kleinanzeigen:3494516211","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Diesel","gear":"Automatik","pano":null,"ahk":null,"power":170,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Diesel"},{"title":"Insignia B Sports Tourer Automatik · 77.000 km laut Titel","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-automatik-77tkm/3487997010-216-1331","id":"kleinanzeigen:3487997010","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"Automatik","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird. Laut Inseratstitel 77.000 km; nicht geprüft.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B 2.0 Turbo 4x4 · 260 PS","url":"https://www.kleinanzeigen.de/s-anzeige/wochenendpreis-opel-insignia-b-2-0-turbo-allrad-260ps/3517831591-216-7034","id":"kleinanzeigen:3517831591","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"Automatik","pano":null,"ahk":null,"power":260,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird. Karosserie (ST oder Limousine) prüfen.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B ST GSi 2.0 Turbo · Panorama, AHK","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-sports-tourer-gsi-2-0-turbo-ahk-pano-/3562484508-216-18880","id":"kleinanzeigen:3562484508","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":true,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panorama steht im Titel, Einbau/Öffnungsfunktion im Inserat bestätigen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin + Panorama"},{"title":"Insignia B ST 1.5 Turbo 165 PS · Stuttgart","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-5-turbo-121kw-innovation-sp-tourer/3552538861-216-9598","id":"kleinanzeigen:3552538861","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":true,"ahk":null,"power":165,"price":12990,"priceNote":"Zuletzt aus vorherigem Vergleich, nicht live geprüft","location":"Ort noch prüfen","stage":"tracked","favorite":true,"priority":"normal","notes":"Preis 12.990 EUR und Panoramadach aus vorherigem Kandidatenvergleich, aktuell nicht live bestätigt. Reparierter Parkschaden – Nachweise prüfen. Die neue Direktadresse wird mit dem vorhandenen Stuttgart-Eintrag abgeglichen.","warning":"Über 11.000 EUR. Preis und reparierten Parkschaden vor einer Entscheidung erneut prüfen.","suggestedGroup":"Über Budget (> 11.000 €)"},{"title":"Insignia ST Business 1. Vorbesitzer · HUD, LED","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-sports-tourer-business-1-vorbesi-head-up-led/3564561665-216-1965","id":"kleinanzeigen:3564561665","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia ST Business Innovation · AHK","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-sports-tourer-business-innovation-ahk-/3566856184-216-1684","id":"kleinanzeigen:3566856184","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"unknown","gear":"unknown","pano":null,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia B Sports Tourer Business Exclusive Top","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-business-exclusive-top-/3406977207-216-5365","id":"kleinanzeigen:3406977207","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B ST Edition · LED, AHK, Navi","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-edition-led-ahk-navi-rf/3568368010-216-92","id":"kleinanzeigen:3568368010","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia 2.0 Diesel 125 kW Business Innovation","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-2-0-diesel-125kw-business-innovation/3568217338-216-3704","id":"kleinanzeigen:3568217338","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"Diesel","gear":"unknown","pano":null,"ahk":null,"power":170,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia B ST 1.5 Turbo 165 PS Exclusive","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-5-turbo-121kw-exclusive-st/3564752909-216-30071","id":"kleinanzeigen:3564752909","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":165,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B ST Innovation · LED, Kamera","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-innovation-led-kamera/3565706342-216-2207","id":"kleinanzeigen:3565706342","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia ST 2.0 Turbo Automatik 4x4 OPC","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-st-2-0-turbo-aut-innovation-4x4-opc-/3568372656-216-6482","id":"kleinanzeigen:3568372656","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"Benzin","gear":"Automatik","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia B Sports Tourer Leder, Navi, 360°, HUD, ACC","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-leder-navi-360-hud-acc/3570060496-216-8374","id":"kleinanzeigen:3570060496","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B Sports Tourer Ultimate · Panorama, HUD","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-ultimate-pano-hud-/3570354604-216-1718","id":"kleinanzeigen:3570354604","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":true,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Panorama steht im Titel, Einbau/Öffnungsfunktion im Inserat bestätigen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia ST 2.0 Diesel (Generation prüfen)","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-sports-tourer-2-0-diesel/3561751275-216-29967","id":"kleinanzeigen:3561751275","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"Diesel","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia B ST 1.5 Turbo 165 PS Innovation","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-1-5-turbo-121kw-innovation-st/3571010303-216-1676","id":"kleinanzeigen:3571010303","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":165,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia A ST Business · Xenon, Standheizung, AHK","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-st-business-navi-xenon-standheizung-ahk/3571779301-216-13734","id":"kleinanzeigen:3571779301","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"A","fuel":"unknown","gear":"unknown","pano":null,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia A (vorläufig)"},{"title":"Insignia B 1.5T ST Innovation · ACC, AGR, LED, 360°","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-1-5t-st-innovation-acc-agr-led-360-/3484902344-216-8175","id":"kleinanzeigen:3484902344","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"},{"title":"Insignia B ST Dynamic · AHK, LED, Automatik","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-sports-tourer-dynamic-ahk-led-automat/3515617250-216-6261","id":"kleinanzeigen:3515617250","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"Automatik","pano":null,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia B ST 2.0 Business Innovation · TÜV 11/2028","url":"https://www.kleinanzeigen.de/s-anzeige/opel-opel-insignia-b-2-0-st-business-innov-tuev-11-28/3572654328-216-20736","id":"kleinanzeigen:3572654328","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia A Sports Tourer 4x4 OPC · Leder, Xenon","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-sports-tourer-4x4-opc-leder-navi-xenon/3562126899-216-1356","id":"kleinanzeigen:3562126899","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"A","fuel":"unknown","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia A (vorläufig)"},{"title":"Insignia B ST Innovation · Navi, Kamera, AHK","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-b-st-innovation-navi-rfk-ahk-1-95t-/3563456296-216-1778","id":"kleinanzeigen:3563456296","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"unknown","gear":"unknown","pano":null,"ahk":true,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Kraftstoff/Motorisierung noch nicht nachgewiesen. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B – Kraftstoff offen"},{"title":"Insignia CT 2.0 Diesel 125 kW Country Tourer","url":"https://www.kleinanzeigen.de/s-anzeige/opel-insignia-ct-2-0-diesel-125kw-country-tourer/3573021656-216-1777","id":"kleinanzeigen:3573021656","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"auto","fuel":"Diesel","gear":"unknown","pano":null,"ahk":null,"power":170,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Insignia-Generation (A/B) nicht zweifelsfrei aus dem Titel ableitbar. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Modellgeneration/Antrieb offen"},{"title":"Insignia ST 1.5 Turbo Innovation","url":"https://www.kleinanzeigen.de/s-anzeige/kombi-opel-insignia-sports-tourer-1-5-turbo-innovation/3548514770-216-9289","id":"kleinanzeigen:3548514770","source":"Kleinanzeigen (deine Liste vom 16.11.2026)","generation":"B","fuel":"Benzin","gear":"unknown","pano":null,"ahk":null,"power":null,"price":null,"priceNote":"Preis im Inserat noch prüfen","location":"Ort noch prüfen","stage":"tracked","favorite":false,"priority":"low","notes":"Preis, Laufleistung, EZ, Verfügbarkeit und Unfallfreiheit direkt im Inserat kontrollieren. Panoramadach ungeprüft: noch KEINE Zuordnung zu „mit“/„ohne“ Panorama. Preis noch unbekannt: Über-Budget-Zuordnung erfolgt automatisch, sobald ein Preis eingetragen wird.","warning":"Nicht live verifiziert: Preis und Ausstattung aus Inserat prüfen.","suggestedGroup":"Insignia B Benzin – Panoramadach offen"}]};
+function installUserLinksOnce(){
+  if(store.linkImportRevision===USER_LINKS_REVISION)return {added:0,updated:0,skipped:0};
+  const result=importCuratedList(USER_LINKS_DATA);
+  store.linkImportRevision=USER_LINKS_REVISION;
+  save();
+  return result;
 }
 // Open ChatGPT with a pre-filled search brief. This does not grant ChatGPT write access to the website.
 const SEARCH_BRIEF=`Bitte suche tagesaktuell nach tatsächlich überprüfbaren Gebrauchtwagen-Inseraten für meine Autosuche: Priorität Opel Insignia B Sports Tourer, bevorzugt 1.5 Turbo 165 PS Benziner, alternativ außergewöhnlich gute 2.0 Diesel; Panorama-/Schiebedach wichtig (öffnend bevorzugt), Automatik gern, Schalter ok, AHK/Keyless positiv. Kaufpreis maximal 10.000 EUR; Angebotspreise bis 11.500 EUR nur falls Verhandlung auf 10.000 EUR nachvollziehbar realistisch. Umkreis Moers 250 km bevorzugt, deutschlandweit bei passenden Angeboten. Unfallwagen und 1.2 PureTech ausschließen. Bereits verkauft/gelöscht und nicht wieder empfehlen: Kleinanzeigen-IDs 3538304317, 3537166161, 3531164885, 3514610789; Bocholt mit gelöschter Anzeige ebenfalls ausschließen. Bitte echte Direkteinträge, Verfügbarkeit soweit prüfbar, Preis/Kilometerstand/Zustand/Ausstattung plausibilisieren, Duplikate vermeiden und niemals Inserate erfinden. Gib mir nach deiner kurzen Bewertung zusätzlich einen kopierbaren JSON-Codeblock im Format {"vehicles":[{"title":"...","url":"https://...","price":9900,"km":120000,"year":2018,"location":"...","fuel":"Benzin","generation":"B","gear":"Automatik","pano":true,"ahk":true,"priority":"high","notes":"...","imageUrl":"https://..."}]}. imageUrl nur angeben, wenn das tatsächliche Foto zur exakt gleichen Anzeige nachweislich gehört. Diesen JSON-Code kann ich in mein Fahrzeugradar-Dashboard übernehmen.`;
@@ -522,7 +817,7 @@ function parseChatPayload(raw){
 }
 function importChatText(){
   try{const value=$('chatImportText').value.trim();if(!value){toast('Bitte zunächst den JSON-Code oder Inseratslinks einfügen.');return;}
-    const stats=importFeed(parseChatPayload(value));setView('inbox');$('chatImportText').value='';toast(`ChatGPT-Import: ${stats.added} neu, ${stats.updated} aktualisiert, ${stats.skipped} übersprungen.`);
+    const payload=parseChatPayload(value);const curated=payload?.format==='fahrzeugradar-curated-import-v1';const stats=curated?importCuratedList(payload):importFeed(payload);setView(curated?'rank-overall':'inbox');$('chatImportText').value='';toast(`Import: ${stats.added} neu, ${stats.updated} ergänzt, ${stats.skipped} bereits vorhanden/ausgeschlossen.`);
   }catch(e){toast('Import fehlgeschlagen: '+(e.message||e));}
 }
 function importFromLink(){
@@ -543,9 +838,9 @@ async function refreshFeed({quiet=false}={}){if(feedInProgress)return;const url=
 }
 function download(filename,contents){const blob=new Blob([contents],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
 function exportBackup(){const data=JSON.stringify({format:'fahrzeugradar-backup',savedAt:new Date().toISOString(),...store},null,2);download('fahrzeugradar-backup-'+new Date().toISOString().slice(0,10)+'.json',data);toast('Datensicherung heruntergeladen.');}
-async function handleImport(file){if(!file)return;try{const raw=JSON.parse(await file.text());if(raw.format==='fahrzeugradar-backup'&&Array.isArray(raw.vehicles)){if(!confirm('Backup importieren? Alle derzeitigen lokalen Fahrzeugdaten werden dadurch ersetzt.'))return;store={version:1,settings:{...DEFAULTS,...(raw.settings||{})},rankings:cleanRankings(raw.rankings),dismissed:Array.from(new Set([...EXCLUDED_IDS,...(raw.dismissed||[])])),vehicles:raw.vehicles.map(v=>norm(v)).filter(Boolean)};save();setView('all');toast(`${store.vehicles.length} Fahrzeuge aus Backup wiederhergestellt.`);}else{const stat=importFeed(raw);setView('inbox');toast(`${stat.added} Vorschläge importiert, ${stat.updated} aktualisiert, ${stat.skipped} übersprungen.`);}}catch(e){toast('Import fehlgeschlagen: '+(e.message||e));}finally{$('fileImport').value='';}}
-function resetData(){if(!confirm('Wirklich alle lokalen Notizen, Entscheidungen und Favoriten löschen und die Startauswahl neu laden?'))return;store=defaultStore();save();setView('all');toast('Startauswahl wiederhergestellt.');}
-function init(){injectIcons(document);$('footerDate').textContent=new Intl.DateTimeFormat('de-DE',{dateStyle:'medium'}).format(new Date());
+async function handleImport(file){if(!file)return;try{const raw=JSON.parse(await file.text());if(raw.format==='fahrzeugradar-backup'&&Array.isArray(raw.vehicles)){if(!confirm('Backup importieren? Alle derzeitigen lokalen Fahrzeugdaten werden dadurch ersetzt.'))return;store={version:1,settings:{...DEFAULTS,...(raw.settings||{})},rankings:cleanRankings(raw.rankings),curatedRevision:txt(raw.curatedRevision||''),linkImportRevision:txt(raw.linkImportRevision||''),dismissed:Array.from(new Set([...EXCLUDED_IDS,...(raw.dismissed||[])])),vehicles:raw.vehicles.map(v=>norm(v)).filter(Boolean)};installCuratedFavoritesOnce();save();setView('all');toast(`${store.vehicles.length} Fahrzeuge aus Backup wiederhergestellt.`);}else if(raw.format==='fahrzeugradar-curated-import-v1'){const stat=importCuratedList(raw);setView('rank-overall');toast(`${stat.added} Fahrzeuge einsortiert, ${stat.updated} ergänzt, ${stat.skipped} bereits vorhanden/ausgeschlossen.`);}else{const stat=importFeed(raw);setView('inbox');toast(`${stat.added} Vorschläge importiert, ${stat.updated} aktualisiert, ${stat.skipped} übersprungen.`);}}catch(e){toast('Import fehlgeschlagen: '+(e.message||e));}finally{$('fileImport').value='';}}
+function resetData(){if(!confirm('Wirklich alle lokalen Notizen, Entscheidungen und Favoriten löschen und die Startauswahl einschließlich der bekannten Kandidaten neu laden?'))return;store=defaultStore();installCuratedFavoritesOnce();installUserLinksOnce();save();setView('all');toast('Startauswahl und deine importierte Linkliste wiederhergestellt.');}
+function init(){installCuratedFavoritesOnce();installUserLinksOnce();injectIcons(document);$('footerDate').textContent=new Intl.DateTimeFormat('de-DE',{dateStyle:'medium'}).format(new Date());
   // Scoped click handling. No inline JS needed, works offline.
   document.addEventListener('click',e=>{
     const nav=e.target.closest('[data-view]');if(nav){setView(nav.dataset.view);return;}
@@ -567,7 +862,7 @@ function init(){injectIcons(document);$('footerDate').textContent=new Intl.DateT
   $('btnSaveBudget').addEventListener('click',()=>{const b=Number($('settingBudget').value),s=Number($('settingStretch').value);if(!(b>0&&s>=b)){toast('Bitte Grenzen prüfen: Verhandlungslimit muss mindestens das Budget sein.');return;}store.settings.budget=b;store.settings.stretch=s;save();toast('Budget gespeichert.');});
   $('btnSaveFeed').addEventListener('click',()=>{const f=$('settingFeed').value.trim();if(f&&!safeLink(f)){toast('Bitte eine vollständige https://-Adresse verwenden.');return;}store.settings.feedUrl=f;save();updateFeedBadge('local');toast('Feed-Adresse gespeichert.');setFeedMessage('Beim nächsten Öffnen und alle 15 Minuten wird der Feed geprüft.');});
   $('btnExport').addEventListener('click',exportBackup);$('btnImport').addEventListener('click',()=>$('fileImport').click());$('fileImport').addEventListener('change',e=>handleImport(e.target.files?.[0]));$('btnReset').addEventListener('click',resetData);
-  window.addEventListener('storage',e=>{if(e.key===STORE_KEY){store=loadStore();render();}});
+  window.addEventListener('storage',e=>{if(e.key===STORE_KEY){store=loadStore();installCuratedFavoritesOnce();render();}});
   window.addEventListener('focus',()=>{if(Date.now()-lastFeedCheck>15*60*1000)checkedFeed(true);});
   render();importFromLink();if(ephemeral)toast('Achtung: Dein Browser hat die lokale Speicherung blockiert. Bitte ein normales Browserfenster verwenden.');checkedFeed(true);setInterval(()=>checkedFeed(true),15*60*1000);
 }
